@@ -33,10 +33,10 @@ func main() {
 	config.ConnectDB()
 
 	// Drop existing tables
-	config.DB.Migrator().DropTable(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{})
+	config.DB.Migrator().DropTable(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{})
 
    // Run migrations
-	 config.DB.AutoMigrate(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{})
+	 config.DB.AutoMigrate(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{})
 	
 	// Re-seed the database
 	config.SeedDB(config.DB)

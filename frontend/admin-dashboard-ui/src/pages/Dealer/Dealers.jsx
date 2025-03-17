@@ -18,6 +18,7 @@ const Dealers = () => {
       });
   }, []);
 
+  // deleting a dealer
   const handleConfirmDelete = (id) => {
     axios
       .delete(`http://localhost:5000/api/dealers/${id}`)
@@ -64,9 +65,9 @@ const Dealers = () => {
               <td>{dealer.number}</td>
               <td>
                 <Link to={`/dashboard/edit-dealer/${dealer.ID}`}>
-                  <button className="btn btn-primary">Edit</button>
+                  <button className="btn btn-primary mx-4">Edit</button>
                 </Link>
-                <button onClick={() => handleConfirmDelete(dealer.id)} className="btn btn-danger">
+                <button onClick={() => handleConfirmDelete(dealer.ID)} className="btn btn-error">
                   Delete
                 </button>
               </td>

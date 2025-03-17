@@ -20,6 +20,7 @@ type RepairShop struct {
 	DealerID   uint    `json:"dealer_id"`
 	DealerName string  `json:"dealer_name"`
   	Brands 	   []CarBrand `gorm:"many2many:car_brands;"`
+	ShopParts []ShopPart `gorm:"foreignKey:RepairShopID"` // Links to ShopPart
 }
 
 // CarBrand model
@@ -36,6 +37,7 @@ type CarModel struct {
 	Make       string `json:"make"`
 	Year       string `json:"year"`
 	BrandID    uint   `json:"brand_id" gorm:"column:car_brand_id"` // Update this line
+	BrandName  string `json:"brand_name"`
 	Parts      []CarPart `gorm:"many2many:car_parts;"`
 }
 
@@ -46,4 +48,14 @@ type CarPart struct {
 	Image       string `json:"image"`
 	Size       string `json:"size"`
 	Price      float64 `json:"price"`
+	ShopParts []ShopPart `gorm:"foreignKey:CarPartID"` // Links to ShopPart
+}
+
+type ShopPart struct {
+    RepairShopID uint      `gorm:"primaryKey"`  // FK to RepairShop
+    CarPartID    uint      `gorm:"primaryKey"`  // FK to CarPart
+    Stock        int       // Quantity available in the shop
+    Price        float64   // Price of the part in the shop
+    RepairShop   RepairShop `gorm:"foreignKey:RepairShopID;references:ID"`
+    CarPart      CarPart    `gorm:"foreignKey:CarPartID;references:ID"`
 }

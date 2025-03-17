@@ -78,7 +78,7 @@ func UpdateDealer(c *fiber.Ctx) error {
 func DeleteDealer(c *fiber.Ctx) error {
 	id := c.Params("id")
 	
-	result := config.DB.Delete(&models.Dealer{}, id)
+	result := config.DB.Debug().Delete(&models.Dealer{}, id)
 	
 	if result.Error != nil {
 		return c.Status(404).JSON(fiber.Map{"error": "Dealer not found"})
@@ -86,3 +86,5 @@ func DeleteDealer(c *fiber.Ctx) error {
 	
 	return c.Status(204).JSON(fiber.Map{"message": "Dealer deleted successfully"})
 }
+
+// Add .Unscoped() to permanently delete

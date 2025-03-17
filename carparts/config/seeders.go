@@ -21,19 +21,19 @@ func SeedDB(db *gorm.DB) error {
 		Role:       "admin",
 	}
 
-	testDealer := models.Dealer{
-		FirstName: "Mike",
-		LastName:  "John",
-		Email:      "jonathan@example.com",
-		Number:   "0786543678",		
-	}
+	// testDealer := models.Dealer{
+	// 	FirstName: "Mike",
+	// 	LastName:  "John",
+	// 	Email:      "jonathan@example.com",
+	// 	Number:   "0786543678",		
+	// }
 
-	testRepairShop := models.RepairShop{
-		Name: "Hass Electronics",
-		Location:  "Kampala",
-		DealerID:   1,
-		DealerName: "Mike",			
-	}
+	// testRepairShop := models.RepairShop{
+	// 	Name: "Hass Electronics",
+	// 	Location:  "Kampala",
+	// 	DealerID:   1,
+	// 	DealerName: "Mike",			
+	// }
 
 	testCarBrand := models.CarBrand{
 		Name: "Toyota",
@@ -58,29 +58,29 @@ func SeedDB(db *gorm.DB) error {
 		return result.Error
 	}
 
-	test := db.Create(&testDealer)
-	if test.Error != nil {
-		return test.Error
-	}
+	// test := db.Create(&testDealer)
+	// if test.Error != nil {
+	// 	return test.Error
+	// }
 
-	repairShop := db.Create(&testRepairShop)
-	if repairShop.Error != nil {
-		return test.Error
-	}
+	// repairShop := db.Create(&testRepairShop)
+	// if repairShop.Error != nil {
+	// 	return test.Error
+	// }
 
 	carBrand := db.Create(&testCarBrand)
 	if carBrand.Error != nil {
-		return test.Error
+		return carBrand.Error
 	}
 
 	carModel := db.Create(&testCarModel)
 	if carModel.Error != nil {
-		return test.Error
+		return carModel.Error
 	}
 
 	carPart := db.Create(&testCarParts)
 	if carPart.Error != nil {
-		return test.Error
+		return carPart.Error
 	}
 	return nil
 }
