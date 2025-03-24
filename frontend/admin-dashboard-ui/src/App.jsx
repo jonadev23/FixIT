@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { isAuthenticated } from "./utils/auth";
+import Main from "./pages/HomePage/Main";
 
 const PrivateRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/" />;
@@ -12,7 +13,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/dashboard/*"
             element={<PrivateRoute element={<Dashboard />} />}

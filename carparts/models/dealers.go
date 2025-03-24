@@ -36,6 +36,7 @@ type CarModel struct {
 	Name       string `json:"name"`
 	Make       string `json:"make"`
 	Year       string `json:"year"`
+	ImageURL   string    `json:"image_url"` // Add this field to store the image path
 	BrandID    uint   `json:"brand_id" gorm:"column:car_brand_id"` // Update this line
 	BrandName  string `json:"brand_name"`
 	Parts      []CarPart `gorm:"many2many:car_parts;"`

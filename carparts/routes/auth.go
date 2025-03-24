@@ -36,11 +36,15 @@ func SetupRoutes(app *fiber.App) {
 	api.Post("/car-model", controllers.CreateModel)
 	api.Delete("/car-model/:id", controllers.DeleteModel)
 	api.Put("/car-model/:id", controllers.UpdateModel)
-		// parst
+		// parts
 	api.Get("/car-parts", controllers.GetParts)
 	api.Get("/car-part/:id", controllers.GetPartByID)
 	api.Post("/car-part", controllers.CreatePart)
 	api.Delete("/car-part/:id", controllers.DeletePart)
 	api.Put("/car-part/:id", controllers.UpdatePart)
+
+	// getting car_part details
+	api.Get("/api/car-parts", controllers.GetCarParts)
+
 
 }

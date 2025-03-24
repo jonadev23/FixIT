@@ -3,20 +3,20 @@ import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 const EditPart = () => {
-  const [currentBrand, setCurrentBrand] = useState({});
+  const [currentPart, setCurrentPart] = useState({});
   const [editing, setEditing] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/car-brand/${id}`)
+      .get(`http://localhost:5000/api/car-part/${id}`)
       .then((response) => {
-        setCurrentBrand(response.data);
+        setCurrentPart(response.data);
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching brand:", error);
+        console.error("Error fetching part:", error);
       });
   }, [id]);
 
@@ -25,19 +25,16 @@ const EditPart = () => {
   };
 
   const handleChange = (event) => {
-    setCurrentBrand({
-      ...currentBrand,
+    setCurrentPart({
+      ...currentPart,
       [event.target.name]: event.target.value,
     });
-    console.log(currentBrand);
+    console.log(currentPart);
   };
 
-  const handleUpdateBrand = () => {
+  const handleUpdatePart = () => {
     axios
-      .put(
-        `http://localhost:5000/api/car-brand/${currentBrand.ID}`,
-        currentBrand
-      )
+      .put(`http://localhost:5000/api/car-part/${currentPart.ID}`, currentPart)
       .then((response) => {
         console.log(response.data);
         setEditing(false);
@@ -50,21 +47,57 @@ const EditPart = () => {
 
   return (
     <div>
-      <Link className="absolute btn btn-neutral" to="/dashboard/dealers">
+      <Link className="absolute btn btn-neutral" to="/dashboard/car-parts">
         Back
       </Link>
       <section className="w-full flex flex-col items-center justify-center h-100">
         <h2 className="text-2xl font-bold">Edit Brands</h2>
-        <form className="flex w-[18rem] bg-white flex-col">
-          <input
-            type="text"
-            name="name"
-            className="input my-2"
-            value={currentBrand.name}
-            onChange={handleChange}
-          />
-
-          <button className="btn btn-primary" onClick={handleUpdateBrand}>
+        <form>
+          <div className="mb-3">
+            <label className="block font-medium">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={currentPart.name}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium">Image</label>
+            <input
+              type="text"
+              name="image"
+              value={currentPart.image}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium">Size</label>
+            <input
+              type="text"
+              name="size"
+              value={currentPart.size}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block font-medium">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={currentPart.price}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <button className="btn btn-primary" onClick={handleUpdatePart}>
             Update
           </button>
         </form>

@@ -22,6 +22,10 @@ func main() {
 
 	// Initialize Fiber
 	app := fiber.New()
+
+	// Serve static images from the "uploads" directory
+    app.Static("/uploads", "./uploads") 
+	
 	// Enable CORS for all routes
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "http://localhost:5173", // Allow React frontend

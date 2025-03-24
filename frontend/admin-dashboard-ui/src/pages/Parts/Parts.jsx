@@ -32,7 +32,7 @@ const Parts = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold">Car Brands</h2>
+      <h2 className="text-2xl font-bold">Car Parts</h2>
       <Link to="/dashboard/create-part">
         <button className="btn btn-neutral my-4">Create</button>
       </Link>
