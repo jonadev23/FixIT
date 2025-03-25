@@ -17,18 +17,29 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Car Parts</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="container  mx-auto px-4 ">
+      <h1 className="font-bold text-center p-2 text-2xl">
+        Find the parts you are looking for
+      </h1>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam assumenda
+        enim eius officiis eligendi est reiciendis, ipsa deserunt na
+      </p>
+      <div className="grid p-2 grid-cols-1 md:grid-cols-4 gap-4">
         {carParts.map((part, index) => (
-          <div key={index} className="border p-4 rounded-lg shadow-lg">
-            <img
-              src={part.image}
-              alt={part.name}
-              className="w-full h-40 object-cover mb-2"
-            />
-            <h2 className="text-lg font-semibold">{part.name}</h2>
-            <p className="text-gray-700">${part.price.toFixed(2)}</p>
+          <div key={index} className=" bg-white card rounded-lg shadow-lg">
+            <div className="flex justify-center pt-2 items-center">
+              <figure className="  w-36 h-36">
+                <img src={part.image} alt={part.name} />
+              </figure>
+            </div>
+
+            <div className="card-body">
+              <h2 className="card-title text-base font-semibold">
+                {part.name}
+              </h2>
+              <p className="text-gray-700">UGX&nbsp;{part.price.toFixed(2)}</p>
+            </div>
           </div>
         ))}
       </div>

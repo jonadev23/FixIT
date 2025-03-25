@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { isAuthenticated } from "./utils/auth";
 import Main from "./pages/HomePage/Main";
+import Layout from "./Layout/Layout";
 
 const PrivateRoute = ({ element }) => {
   return isAuthenticated() ? element : <Navigate to="/" />;
@@ -10,18 +11,20 @@ const PrivateRoute = ({ element }) => {
 
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/dashboard/*"
-            element={<PrivateRoute element={<Dashboard />} />}
-          />
-        </Routes>
-      </Router>
-    </>
+    <div className="bg-[#F0F8FF]">
+      <Layout>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/dashboard/*"
+              element={<PrivateRoute element={<Dashboard />} />}
+            />
+          </Routes>
+        </Router>
+      </Layout>
+    </div>
   );
 }
 

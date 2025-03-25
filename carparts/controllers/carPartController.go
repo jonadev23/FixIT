@@ -35,24 +35,47 @@ import (
 		return c.JSON(parts)
 	}
 
+	// func CreatePart(c *fiber.Ctx) error {
+	// 	var part models.CarPart
+		
+	// 	// Parse the JSON request body into the model struct
+	// 	if err := c.BodyParser(&part); err != nil {
+	// 		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+	// 	}
+		
+	// 	// Save model to database
+	// 	result := config.DB.Create(&part)
+		
+	// 	if result.Error != nil {
+	// 		return c.Status(500).JSON(fiber.Map{"error": result.Error.Error()})
+	// 	}
+		
+	// 	// Return the newly created model
+	// 	return c.Status(201).JSON(part)
+	// }
+
 	func CreatePart(c *fiber.Ctx) error {
 		var part models.CarPart
-		
+	
 		// Parse the JSON request body into the model struct
 		if err := c.BodyParser(&part); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 		}
-		
+	
+		// Append a string to the Name or any other field
+		part.Image = "http://127.0.0.1:5000/uploads/"+ part.Image
+	
 		// Save model to database
 		result := config.DB.Create(&part)
-		
+	
 		if result.Error != nil {
 			return c.Status(500).JSON(fiber.Map{"error": result.Error.Error()})
 		}
-		
+	
 		// Return the newly created model
 		return c.Status(201).JSON(part)
 	}
+	
 
 	// Updatepart ...
 func UpdatePart(c *fiber.Ctx) error {
@@ -73,6 +96,29 @@ func UpdatePart(c *fiber.Ctx) error {
 	
 	return c.Status(200).JSON(fiber.Map{"message": "part updated successfully"})
 }
+
+// func UpdatePart(c *fiber.Ctx) error {
+//     id := c.Params("id")
+//     var part models.CarPart
+
+//     // Parse the JSON request body
+//     if err := c.BodyParser(&part); err != nil {
+//         return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+//     }
+
+//     // Append a string to the Name or another field
+//     part.Image = "http://localhost/5000/uploads"+ part.Image  
+
+//     // Update part in database
+//     result := config.DB.Model(&models.CarPart{}).Where("id = ?", id).Updates(part)
+
+//     if result.Error != nil {
+//         return c.Status(404).JSON(fiber.Map{"error": "Part not found"})
+//     }
+
+//     return c.Status(200).JSON(fiber.Map{"message": "Part updated successfully"})
+// }
+
 
 // Delete parts ...
 func DeletePart(c *fiber.Ctx) error {
