@@ -26,7 +26,7 @@ import (
 		var brands []models.CarBrand
 		
 		// Use Preload to fetch related RepairShops
-		result := config.DB.Find(&brands)
+		result := config.DB.Preload("CarModels").Find(&brands)
 		
 		if result.Error != nil {
 			return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch brands"})

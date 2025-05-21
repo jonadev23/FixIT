@@ -54,27 +54,60 @@ import (
 	// 	return c.Status(201).JSON(part)
 	// }
 
-	func CreatePart(c *fiber.Ctx) error {
-		var part models.CarPart
+	func CreatePartWithShop(c *fiber.Ctx) error {
+		var request struct {
+			Name         string  `json:"name"`
+			Image        string  `json:"image"`
+			Size         string  `json:"size"`
+			Price        float64 `json:"price"`
+			Condition    string  `json:"condition"`
+			CarModelID   uint    `json:"car_model_id"`
+			RepairShopID uint    `json:"repair_shop_id"`
+			Stock        int     `json:"stock"`
+			ShopPrice    float64 `json:"shop_price"`
+		}
 	
-		// Parse the JSON request body into the model struct
-		if err := c.BodyParser(&part); err != nil {
+		// Parse the JSON request body
+		if err := c.BodyParser(&request); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 		}
 	
-		// Append a string to the Name or any other field
-		part.Image = "http://127.0.0.1:5000/uploads/"+ part.Image
-	
-		// Save model to database
-		result := config.DB.Create(&part)
-	
-		if result.Error != nil {
-			return c.Status(500).JSON(fiber.Map{"error": result.Error.Error()})
+		// Create CarPart
+		carPart := models.CarPart{
+			Name:       request.Name,
+			Image:      "http://127.0.0.1:5000/uploads/" + request.Image,
+			Size:       request.Size,
+			Price:      request.Price,
+			Condition:  request.Condition,
+			CarModelID: request.CarModelID,
 		}
 	
-		// Return the newly created model
-		return c.Status(201).JSON(part)
+		// Save CarPart to DB
+		if err := config.DB.Create(&carPart).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"error": "Failed to create car part"})
+		}
+	
+		// Create ShopPart (mapping part to shop)
+		shopPart := models.ShopPart{
+			RepairShopID: request.RepairShopID,
+			CarPartID:    carPart.ID, // Use the newly created CarPart ID
+			Stock:        request.Stock,
+			Price:        request.ShopPrice,
+		}
+	
+		// Save ShopPart to DB
+		if err := config.DB.Create(&shopPart).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"error": "Failed to create shop part"})
+		}
+	
+		return c.Status(201).JSON(fiber.Map{
+			"message":   "Car part and shop part created successfully",
+			"carPart":   carPart,
+			"shopPart":  shopPart,
+		})
 	}
+	
+	
 	
 
 	// Updatepart ...

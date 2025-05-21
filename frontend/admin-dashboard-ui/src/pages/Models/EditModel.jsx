@@ -95,8 +95,40 @@ const EditModel = () => {
           />
           <input
             type="text"
+            name="image"
+            value={currentModel.image}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
+            name="price"
+            value={currentModel.price}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
+            name="condition"
+            value={currentModel.condition}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
             name="year"
             value={currentModel.year}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
+            name="image_url"
+            value={currentModel.image_url}
             onChange={handleChange}
             className="input my-2"
             required

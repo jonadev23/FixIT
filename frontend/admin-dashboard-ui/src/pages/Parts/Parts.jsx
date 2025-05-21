@@ -45,6 +45,7 @@ const Parts = () => {
             <th>Image</th>
             <th>Size</th>
             <th>Price</th>
+            <th>Condition</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -56,6 +57,7 @@ const Parts = () => {
               <td>{brand.image}</td>
               <td>{brand.size}</td>
               <td>{brand.price}</td>
+              <td>{brand.condition}</td>
 
               <td>
                 <Link to={`/dashboard/edit-part/${brand.ID}`}>

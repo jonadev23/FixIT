@@ -15,48 +15,70 @@ type Dealer struct {
 // RepairShop model
 type RepairShop struct {
     gorm.Model
-    Name       string  `json:"name"`
-    Location   string  `json:"location"`
-	DealerID   uint    `json:"dealer_id"`
-	DealerName string  `json:"dealer_name"`
-  	Brands 	   []CarBrand `gorm:"many2many:car_brands;"`
-	ShopParts []ShopPart `gorm:"foreignKey:RepairShopID"` // Links to ShopPart
+    Name       string     `json:"name"`
+    Location   string     `json:"location"`
+    DealerID   uint       `json:"dealer_id"`
+    DealerName string     `json:"dealer_name"`
+    DealerContact string     `json:"dealer_contact"`
+    Rating       int     `json:"rating"`
+    Brands     []CarBrand `gorm:"many2many:car_brands;"`
+    ShopParts  []ShopPart `gorm:"foreignKey:RepairShopID"`
 }
 
 // CarBrand model
 type CarBrand struct {
-	gorm.Model
-	Name       string `json:"name"`
-	CarModels  []CarModel `gorm:"many2many:car_models;"`
-}
-
-// Carmodels model
-type CarModel struct {
-	gorm.Model
-	Name       string `json:"name"`
-	Make       string `json:"make"`
-	Year       string `json:"year"`
-	ImageURL   string    `json:"image_url"` // Add this field to store the image path
-	BrandID    uint   `json:"brand_id" gorm:"column:car_brand_id"` // Update this line
-	BrandName  string `json:"brand_name"`
-	Parts      []CarPart `gorm:"many2many:car_parts;"`
+    gorm.Model
+    Name      string     `json:"name"`
+    CarModels []CarModel `gorm:"foreignKey:BrandID"`
 }
 
 // CarPart model
 type CarPart struct {
-	gorm.Model
-	Name       string `json:"name"`
-	Image       string `json:"image"`
-	Size       string `json:"size"`
-	Price      float64 `json:"price"`
-	ShopParts []ShopPart `gorm:"foreignKey:CarPartID"` // Links to ShopPart
+    gorm.Model
+    Name       string   `json:"name"`
+    Image      string   `json:"image"`
+    Size       string   `json:"size"`
+    Price      float64  `json:"price"`
+    Condition  string   `json:"condition"`
+    CarModelID uint     `json:"car_model_id"` // Foreign Key
+    CarModel   CarModel `gorm:"foreignKey:CarModelID;references:ID"`
 }
 
-type ShopPart struct {
-    RepairShopID uint      `gorm:"primaryKey"`  // FK to RepairShop
-    CarPartID    uint      `gorm:"primaryKey"`  // FK to CarPart
-    Stock        int       // Quantity available in the shop
-    Price        float64   // Price of the part in the shop
-    RepairShop   RepairShop `gorm:"foreignKey:RepairShopID;references:ID"`
-    CarPart      CarPart    `gorm:"foreignKey:CarPartID;references:ID"`
+// CarModel model
+type CarModel struct {
+    gorm.Model
+    Name      string    `json:"name"`
+    Make      string    `json:"make"`
+    Image      string   `json:"image"`
+    Price      float64  `json:"price"`
+    Condition  string   `json:"condition"`
+    Year      string    `json:"year"`
+    ImageURL  string    `json:"image_url"`
+    BrandID   uint      `json:"brand_id"`
+    BrandName string    `json:"brand_name"`
+    Parts     []CarPart `gorm:"foreignKey:CarModelID"` // Bidirectional relationship
 }
+
+// ShopPart model (Mapping CarParts to RepairShops)
+type ShopPart struct {
+    gorm.Model
+    RepairShopID uint      `json:"repair_shop_id"` // FK to RepairShop
+    CarPartID    uint      `json:"car_part_id"`    // FK to CarPart
+    Stock        int       `json:"stock"`         // Quantity available in the shop
+    Price        float64   `json:"price"`         // Price of the part in the shop
+    RepairShop   RepairShop `gorm:"foreignKey:RepairShopID"`
+    CarPart      CarPart    `gorm:"foreignKey:CarPartID"`
+}
+
+
+// ShopPart model (Mapping CarParts to RepairShops)
+type ShopModel struct {
+    gorm.Model
+    RepairShopID uint      `json:"repair_shop_id"` // FK to RepairShop
+    CarModelID    uint      `json:"car_model_id"`    // FK to CarPart
+    Stock        int       `json:"stock"`         // Quantity available in the shop
+    Price        float64   `json:"price"`         // Price of the part in the shop
+    RepairShop   RepairShop `gorm:"foreignKey:RepairShopID"`
+    CarModel      CarModel    `gorm:"foreignKey:CarModelID"`
+}
+

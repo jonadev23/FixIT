@@ -39,19 +39,20 @@ func SeedDB(db *gorm.DB) error {
 		Name: "Toyota",
 	}
 
-	testCarModel := models.CarModel{
-		Name: "Camry",
-		Make: "Sedan",
-		Year: "2021",
-		BrandID: 1,
-	}
+	// testCarModel := models.CarModel{
+	// 	Name: "Camry",
+	// 	Make: "Sedan",
+	// 	Year: "2021",
+	// 	BrandID: 1,
+	// }
 
-	testCarParts := models.CarPart{
-		Name: "Tyre",
-		Image: "/images/tyre.jpg",
-		Size: "12",
-		Price: 12500.0,
-	}
+	// testCarParts := models.CarPart{
+	// 	Name: "Oil Pump",
+	// 	Image: "http://127.0.01:5000/uploads/oilPumpToyota.jpg",
+	// 	Size: "12",
+	// 	Price: 12500.0,
+	// 	Condition: "New",
+	// }
 
 	result := db.Create(&adminUser)
 	if result.Error != nil {
@@ -73,14 +74,14 @@ func SeedDB(db *gorm.DB) error {
 		return carBrand.Error
 	}
 
-	carModel := db.Create(&testCarModel)
-	if carModel.Error != nil {
-		return carModel.Error
-	}
+	// carModel := db.Create(&testCarModel)
+	// if carModel.Error != nil {
+	// 	return carModel.Error
+	// }
 
-	carPart := db.Create(&testCarParts)
-	if carPart.Error != nil {
-		return carPart.Error
-	}
+	// carPart := db.Create(&testCarParts)
+	// if carPart.Error != nil {
+	// 	return carPart.Error
+	// }
 	return nil
 }

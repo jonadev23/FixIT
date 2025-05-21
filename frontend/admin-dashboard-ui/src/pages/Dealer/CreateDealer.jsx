@@ -17,9 +17,12 @@ const CreateDealer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/dealers", dealer);
+      const response = await axios.post(
+        "http://localhost:5000/api/dealers",
+        dealer
+      );
       setMessage("Dealer created successfully!");
-    //   setDealer({ first_name: "",last_name:"", email: "", contact: "" });
+      //   setDealer({ first_name: "",last_name:"", email: "", contact: "" });
     } catch (error) {
       console.error("Error creating dealer:", error);
       setMessage("Failed to create dealer.");
@@ -75,7 +78,10 @@ const CreateDealer = () => {
             required
           />
         </div>
-        <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white p-2 rounded w-full"
+        >
           Create Dealer
         </button>
       </form>

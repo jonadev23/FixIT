@@ -3,15 +3,28 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/jonadev23/backend-project/controllers"
+	"github.com/jonadev23/backend-project/handlers"
+	"github.com/jonadev23/backend-project/middleware"
 )
 
 // SetupRoutes defines API routes
 func SetupRoutes(app *fiber.App) {
-	api := app.Group("/api")
+// Public routes
+auth := app.Group("/auth")
+auth.Post("/register", controllers.Register)
+auth.Post("/login", controllers.Login)
 
-	auth := api.Group("/auth")
-	auth.Post("/register", controllers.Register)
-	auth.Post("/login", controllers.Login)
+// User routes (authenticated)
+user := app.Group("/user", middleware.AuthRequired)
+user.Get("/profile", controllers.UserProfile)
+
+// Admin routes (admin only)
+admin := app.Group("/admin", middleware.AdminRequired)
+admin.Get("/dashboard", controllers.AdminDashboard)
+
+
+
+	api := app.Group("/api")	
 	// dealers
 	api.Get("/dealers", controllers.GetDealers)
 	api.Get("/dealers/:id", controllers.GetDealerByID)
@@ -37,14 +50,21 @@ func SetupRoutes(app *fiber.App) {
 	api.Delete("/car-model/:id", controllers.DeleteModel)
 	api.Put("/car-model/:id", controllers.UpdateModel)
 		// parts
-	api.Get("/car-parts", controllers.GetParts)
+	// api.Get("/car-parts", controllers.GetParts)
 	api.Get("/car-part/:id", controllers.GetPartByID)
-	api.Post("/car-part", controllers.CreatePart)
+	api.Post("/car-part", controllers.CreatePartWithShop)
 	api.Delete("/car-part/:id", controllers.DeletePart)
 	api.Put("/car-part/:id", controllers.UpdatePart)
 
 	// getting car_part details
-	api.Get("/api/car-parts", controllers.GetCarParts)
+	api.Get("/car-parts", controllers.GetAllCarParts)
+	api.Get("/shop-part/:id", controllers.GetShopPartByID)
+	api.Get("/car-parts/search", controllers.SearchParts)
 
+	// google auth
+	api.Post("/auth/google", handlers.GoogleAuthHandler)
 
+	// getting car_part details
+	api.Get("/car-models", controllers.GetAllCarModels)
+	api.Get("/shop-model/:id", controllers.GetShopModelByID)
 }

@@ -5,11 +5,11 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/joho/godotenv"
 	"github.com/jonadev23/backend-project/config"
-	"github.com/jonadev23/backend-project/routes"
 	"github.com/jonadev23/backend-project/models"
+	"github.com/jonadev23/backend-project/routes"
 )
 
 
@@ -31,14 +31,18 @@ func main() {
 		AllowOrigins: "http://localhost:5173", // Allow React frontend
 		AllowMethods: "GET,POST,PUT,DELETE",  // Allow specific methods
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization", // Allow headers
+		AllowCredentials: true, // Allow credentials
 	}))	
 
 	// Connect to database
 	config.ConnectDB()
+	
+// Drop existing tables
+	// config.DB.Migrator().DropTable(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{},&models.ShopModel{})
 
 	   // Run migrations
-	 config.DB.AutoMigrate(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{})
-	
+	config.DB.AutoMigrate(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{},&models.ShopModel{})
+	 
 	// Setup routes
 	routes.SetupRoutes(app)
 

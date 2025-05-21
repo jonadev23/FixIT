@@ -2,13 +2,19 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateModel = () => {
+  // Update your state initialization to use correct types
   const [model, setModel] = useState({
     name: "",
     make: "",
-    year:"",
-    car_brand_id: "",
+    image: "",
+    price: 0, // Initialize as number
+    condition: "",
+    year: "",
+    brand_id: 0, // Initialize as number
     brand_name: "",
+    image_url: "",
   });
+
   const [brands, setBrands] = useState([]);
   const [message, setMessage] = useState("");
   // getting all brands
@@ -17,7 +23,6 @@ const CreateModel = () => {
       .get("http://localhost:5000/api/car-brands")
       .then((response) => {
         setBrands(response.data);
-        
       })
       .catch((error) => {
         console.error("Error fetching models:", error);
@@ -31,29 +36,40 @@ const CreateModel = () => {
     if (selectedBrand) {
       setModel((prevmodel) => ({
         ...prevmodel,
-        car_brand_id: selectedBrand.ID,
+        brand_id: selectedBrand.ID,
         brand_name: selectedBrand.name,
       }));
     }
   };
 
+  // Update handleChange to handle numeric fields
   const handleChange = (e) => {
-    setModel({ ...model, [e.target.name]: e.target.value });
-  };
+    const value =
+      e.target.type === "number" ? parseFloat(e.target.value) : e.target.value;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/car-model",
-        model
-      );
-      setMessage("model created successfully!");
-    } catch (error) {
-      console.error("Error creating model:", error);
-      setMessage("Failed to create model.");
-    }
+    setModel({ ...model, [e.target.name]: value });
   };
+ // Update handleSubmit to ensure correct payload
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Convert remaining string numbers to actual numbers
+    const payload = {
+      ...model,
+      price: parseFloat(model.price),
+      brand_id: parseInt(model.brand_id, 10)
+    };
+    
+    const response = await axios.post(
+      "http://localhost:5000/api/car-model",
+      payload
+    );
+    setMessage("Model created successfully!");
+  } catch (error) {
+    console.error("Error creating model:", error);
+    setMessage("Failed to create model.");
+  }
+};
 
   return (
     <div className="max-w-md mx-auto mt-10 p-5 bg-white shadow-md rounded">
@@ -83,6 +99,39 @@ const CreateModel = () => {
           />
         </div>
         <div className="mb-3">
+          <label className="block font-medium">Image</label>
+          <input
+            type="text"
+            name="image"
+            value={model.image}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="block font-medium">Price</label>
+          <input
+            type="number"
+            name="price"
+            value={model.price}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="block font-medium">Condition</label>
+          <input
+            type="text"
+            name="condition"
+            value={model.condition}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
           <label className="block font-medium">Year</label>
           <input
             type="text"
@@ -94,10 +143,21 @@ const CreateModel = () => {
           />
         </div>
         <div className="mb-3">
+          <label className="block font-medium">Logo</label>
+          <input
+            type="text"
+            name="image_url"
+            value={model.image_url}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
           <label className="block font-medium">Car Brand</label>
           <select
             className="w-full p-2 border border-gray-300 rounded"
-            name="car_brand_id" // Ensure this name matches the backend field expecting the ID
+            name="brand_id" // Ensure this name matches the backend field expecting the ID
             onChange={handleBrandChange} // Update state on selection
           >
             <option value="">--Select Name--</option>
@@ -108,7 +168,6 @@ const CreateModel = () => {
             ))}
           </select>
         </div>
-       
 
         <button
           type="submit"

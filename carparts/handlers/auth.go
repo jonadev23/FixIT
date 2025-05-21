@@ -5,8 +5,8 @@ import (
     "net/http"
     "time"
 
-    "github.com/dgrijalva/jwt-go"
-    "github.com/your-username/admin-dashboard-backend/models"
+    "github.com/golang-jwt/jwt/v4"
+    "github.com/jonadev23/backend-project/models"
 )
 
 // Change this to a strong secret key

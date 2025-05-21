@@ -45,6 +45,7 @@ const Shops = () => {
             <th>Name</th>
             <th>Dealer</th>
             <th>Location</th>
+            <th>Rating</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -55,6 +56,7 @@ const Shops = () => {
               <td>{shop.name}</td>
               <td>{shop.dealer_name}</td>
               <td>{shop.location}</td>
+              <td>{shop.rating}</td>
               <td>
                 <Link to={`/dashboard/edit-shop/${shop.ID}`}>
                   <button className="btn btn-primary mx-4">Edit</button>

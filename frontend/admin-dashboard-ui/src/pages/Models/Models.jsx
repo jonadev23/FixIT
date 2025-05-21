@@ -17,6 +17,7 @@ const Models = () => {
       });
   }, []);
 
+
   // deleting a model
   const handleConfirmDelete = (id) => {
     axios
@@ -29,6 +30,7 @@ const Models = () => {
         console.error("Error deleting model:", error);
       });
   };
+
 
   return (
     <div>
@@ -44,8 +46,12 @@ const Models = () => {
             <th>#</th>
             <th>Name</th>
             <th>Make</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Condition</th>
             <th>Year</th>
             <th>Brand Name</th>
+            <th>Logo Url</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -55,8 +61,12 @@ const Models = () => {
               <td>{model.ID}</td>
               <td>{model.name}</td>
               <td>{model.make}</td>
+              <td>{model.image}</td>
+              <td>{model.price}</td>
+              <td>{model.condition}</td>
               <td>{model.year}</td>
               <td>{model.brand_name}</td>
+              <td>{model.image_url}</td>
               <td>
                 <Link to={`/dashboard/edit-model/${model.ID}`}>
                   <button className="btn btn-primary mx-4">Edit</button>

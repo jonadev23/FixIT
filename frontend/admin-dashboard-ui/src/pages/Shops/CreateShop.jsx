@@ -7,6 +7,8 @@ const CreateShop = () => {
     location: "",
     dealer_id: "",
     dealer_name: "",
+    dealer_contact: "",
+    rating: 0,
   });
   const [dealers, setDealers] = useState([]);
   const [message, setMessage] = useState("");
@@ -16,7 +18,6 @@ const CreateShop = () => {
       .get("http://localhost:5000/api/dealers")
       .then((response) => {
         setDealers(response.data);
-        
       })
       .catch((error) => {
         console.error("Error fetching shops:", error);
@@ -32,12 +33,37 @@ const CreateShop = () => {
         ...prevShop,
         dealer_id: selectedDealer.ID,
         dealer_name: selectedDealer.first_name,
+        dealer_contact: selectedDealer.number,
       }));
     }
   };
 
+  // const handleChange = (e) => {
+  //   setShop({ ...shop, [e.target.name]: e.target.value });
+  //   console.log(shop);
+
+  // };
+
   const handleChange = (e) => {
-    setShop({ ...shop, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Check if the field being changed is "rating"
+    if (name === "rating") {
+      // Convert to number if it's not empty, otherwise keep as empty string
+      // You could also default to 0 or null instead of empty string
+      const numericValue = value === "" ? "" : Number(value);
+
+      setShop({
+        ...shop,
+        [name]: !isNaN(numericValue) ? numericValue : shop.rating,
+      });
+    } else {
+      // For non-rating fields, update normally
+      setShop({
+        ...shop,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -91,6 +117,17 @@ const CreateShop = () => {
             type="text"
             name="location"
             value={shop.location}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="block font-medium">Rating</label>
+          <input
+            type="number"
+            name="rating"
+            value={shop.rating}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded"
             required

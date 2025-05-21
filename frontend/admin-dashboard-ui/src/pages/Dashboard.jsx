@@ -14,13 +14,16 @@ import EditModel from "./Models/EditModel";
 import Parts from "./Parts/Parts";
 import CreatePart from "./Parts/CreatePart";
 import EditPart from "./Parts/EditParts";
+import { useAuth } from "../context/AuthContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/");
+    setIsOpen(false);
   };
 
   return (

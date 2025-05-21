@@ -102,6 +102,14 @@ const EditShop = () => {
             className="input my-2"
             required
           />
+           <input
+            type="text"
+            name="rating"
+            value={currentShop.rating}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
           <button className="btn btn-primary" onClick={handleUpdateShop}>
             Update
           </button>

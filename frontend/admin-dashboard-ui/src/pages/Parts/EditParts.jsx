@@ -97,6 +97,17 @@ const EditPart = () => {
               required
             />
           </div>
+          <div className="mb-3">
+            <label className="block font-medium">Condition</label>
+            <input
+              type="text"
+              name="condition"
+              value={currentPart.condition}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
           <button className="btn btn-primary" onClick={handleUpdatePart}>
             Update
           </button>
