@@ -28,7 +28,7 @@ func main() {
 	
 	// Enable CORS for all routes
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:5173", // Allow React frontend
+		AllowOrigins: "https://starlit-wisp-63c85a.netlify.app/", // Allow React frontend
 		AllowMethods: "GET,POST,PUT,DELETE",  // Allow specific methods
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization", // Allow headers
 		AllowCredentials: true, // Allow credentials
