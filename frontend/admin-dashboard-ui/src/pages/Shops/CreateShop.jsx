@@ -15,7 +15,7 @@ const CreateShop = () => {
   // getting all dealers
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/dealers")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/dealers")
       .then((response) => {
         setDealers(response.data);
       })
@@ -70,7 +70,7 @@ const CreateShop = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/shops",
+        "https://starlit-wisp-63c85a.netlify.app/api/shops",
         shop
       );
       setMessage("shop created successfully!");

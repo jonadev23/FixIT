@@ -10,7 +10,7 @@ const EditBrand = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/car-brand/${id}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-brand/${id}`)
       .then((response) => {
         setCurrentBrand(response.data);
         console.log(response.data);
@@ -35,7 +35,7 @@ const EditBrand = () => {
   const handleUpdateBrand = () => {
     axios
       .put(
-        `http://localhost:5000/api/car-brand/${currentBrand.ID}`,
+        `https://starlit-wisp-63c85a.netlify.app/api/car-brand/${currentBrand.ID}`,
         currentBrand
       )
       .then((response) => {

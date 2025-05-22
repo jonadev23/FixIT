@@ -16,7 +16,7 @@ const CreateBrand = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/car-brand",
+        "https://starlit-wisp-63c85a.netlify.app/api/car-brand",
         brand
       );
       setMessage("brand created successfully!");

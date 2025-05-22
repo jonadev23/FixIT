@@ -17,7 +17,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/car-parts")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/car-parts")
       .then((response) => {
         setCarParts(response.data);
         console.log(response.data);

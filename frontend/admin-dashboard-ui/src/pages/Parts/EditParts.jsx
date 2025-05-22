@@ -10,7 +10,7 @@ const EditPart = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/car-part/${id}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-part/${id}`)
       .then((response) => {
         setCurrentPart(response.data);
         console.log(response.data);
@@ -34,7 +34,7 @@ const EditPart = () => {
 
   const handleUpdatePart = () => {
     axios
-      .put(`http://localhost:5000/api/car-part/${currentPart.ID}`, currentPart)
+      .put(`https://starlit-wisp-63c85a.netlify.app/api/car-part/${currentPart.ID}`, currentPart)
       .then((response) => {
         console.log(response.data);
         setEditing(false);

@@ -18,7 +18,7 @@ const CreateDealer = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/dealers",
+        "https://starlit-wisp-63c85a.netlify.app/api/dealers",
         dealer
       );
       setMessage("Dealer created successfully!");

@@ -33,7 +33,7 @@ const SearchResultsPage = () => {
   useEffect(() => {
     // Fetch brands when component mounts
     axios
-      .get("http://localhost:5000/api/car-brands")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
       .then((response) => {
         setBrands(response.data);
         console.log(response.data);
@@ -82,7 +82,7 @@ const SearchResultsPage = () => {
     setLoading(true);
     axios
       .get(
-        `http://localhost:5000/api/car-parts/search?${requestParams.toString()}`
+        `https://starlit-wisp-63c85a.netlify.app/api/car-parts/search?${requestParams.toString()}`
       )
       .then((response) => {
         setCarParts(response.data.results);

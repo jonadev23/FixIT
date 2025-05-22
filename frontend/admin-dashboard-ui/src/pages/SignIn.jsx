@@ -25,7 +25,7 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/login", {
+      const response = await axios.post("https://starlit-wisp-63c85a.netlify.app/auth/login", {
         email_or_phone: formData.emailOrPhone,
         password: formData.password,
       });

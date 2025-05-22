@@ -8,7 +8,7 @@ const Models = () => {
   // getting all models
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/car-models")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/car-models")
       .then((response) => {
         setmodels(response.data);
       })
@@ -21,7 +21,7 @@ const Models = () => {
   // deleting a model
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/car-model/${id}`)
+      .delete(`https://starlit-wisp-63c85a.netlify.app/api/car-model/${id}`)
       .then((response) => {
         setmodels(models.filter((model) => model.id !== id));
         navigate('/dashboard/car-models');

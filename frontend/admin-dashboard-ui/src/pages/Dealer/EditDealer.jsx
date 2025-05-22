@@ -10,7 +10,7 @@ const EditDealer = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/dealers/${id}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/dealers/${id}`)
       .then((response) => {
         setCurrentDealer(response.data);
         console.log(response.data);
@@ -34,7 +34,7 @@ const EditDealer = () => {
   const handleUpdateDealer = () => {
     axios
       .put(
-        `http://localhost:5000/api/dealers/${currentDealer.ID}`,
+        `https://starlit-wisp-63c85a.netlify.app/api/dealers/${currentDealer.ID}`,
         currentDealer
       )
       .then((response) => {

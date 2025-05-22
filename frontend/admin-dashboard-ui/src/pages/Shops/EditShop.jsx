@@ -11,7 +11,7 @@ const EditShop = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/shops/${id}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/shops/${id}`)
       .then((response) => {
         setCurrentShop(response.data);
       })
@@ -19,7 +19,7 @@ const EditShop = () => {
         console.error("Error fetching dealer:", error);
       });
     axios
-      .get("http://localhost:5000/api/dealers")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/dealers")
       .then((response) => {
         setDealers(response.data);
         console.log(response.data);
@@ -55,7 +55,7 @@ const EditShop = () => {
 
   const handleUpdateShop = () => {
     axios
-      .put(`http://localhost:5000/api/shops/${currentShop.ID}`, currentShop)
+      .put(`https://starlit-wisp-63c85a.netlify.app/api/shops/${currentShop.ID}`, currentShop)
       .then((response) => {
         console.log(response.data);
         setEditing(false);

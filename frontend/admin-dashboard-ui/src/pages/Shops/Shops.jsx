@@ -8,7 +8,7 @@ const Shops = () => {
   // getting all shops
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/shops")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/shops")
       .then((response) => {
         setShops(response.data);
       })
@@ -20,7 +20,7 @@ const Shops = () => {
   // deleting a shop
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/shops/${id}`)
+      .delete(`https://starlit-wisp-63c85a.netlify.app/api/shops/${id}`)
       .then((response) => {
         setShops(shops.filter((shop) => shop.id !== id));
         navigate('/dashboard/shops');

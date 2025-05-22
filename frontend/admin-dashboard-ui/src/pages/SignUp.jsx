@@ -28,7 +28,7 @@ const SignupForm = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/register", {
+      const response = await axios.post("https://starlit-wisp-63c85a.netlify.app/auth/register", {
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email,

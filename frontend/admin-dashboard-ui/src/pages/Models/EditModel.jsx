@@ -11,7 +11,7 @@ const EditModel = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/car-model/${id}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-model/${id}`)
       .then((response) => {
         setCurrentModel(response.data);
       })
@@ -19,7 +19,7 @@ const EditModel = () => {
         console.error("Error fetching model:", error);
       });
     axios
-      .get("http://localhost:5000/api/car-brands")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
       .then((response) => {
         setBrands(response.data);
         console.log(response.data);
@@ -56,7 +56,7 @@ const EditModel = () => {
   const handleUpdateBrand = () => {
     axios
       .put(
-        `http://localhost:5000/api/car-model/${currentModel.ID}`,
+        `https://starlit-wisp-63c85a.netlify.app/api/car-model/${currentModel.ID}`,
         currentModel
       )
       .then((response) => {

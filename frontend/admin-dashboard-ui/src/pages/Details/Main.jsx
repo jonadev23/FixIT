@@ -17,7 +17,7 @@ const Main = () => {
   // getting single car-part from db
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/car-part/${parseInt(id)}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-part/${parseInt(id)}`)
       .then((response) => {
         setPart(response.data);
         // console.log(response.data);
@@ -27,7 +27,7 @@ const Main = () => {
       });
     // getting a particular shop-part
     axios
-      .get(`http://localhost:5000/api/shop-part/${parseInt(id)}`)
+      .get(`https://starlit-wisp-63c85a.netlify.app/api/shop-part/${parseInt(id)}`)
       .then((response) => {
         setShopPart(response.data);
         console.log(response.data);

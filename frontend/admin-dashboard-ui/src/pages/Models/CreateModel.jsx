@@ -20,7 +20,7 @@ const CreateModel = () => {
   // getting all brands
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/car-brands")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
       .then((response) => {
         setBrands(response.data);
       })
@@ -61,7 +61,7 @@ const handleSubmit = async (e) => {
     };
     
     const response = await axios.post(
-      "http://localhost:5000/api/car-model",
+      "https://starlit-wisp-63c85a.netlify.app/api/car-model",
       payload
     );
     setMessage("Model created successfully!");

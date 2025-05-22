@@ -21,8 +21,8 @@ const CreatePart = () => {
     const fetchData = async () => {
       try {
         const [carModelsRes, repairShopsRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/car-models"),
-          axios.get("http://localhost:5000/api/shops"),
+          axios.get("https://starlit-wisp-63c85a.netlify.app/api/car-models"),
+          axios.get("https://starlit-wisp-63c85a.netlify.app/api/shops"),
         ]);
         setCarModels(carModelsRes.data);
         setRepairShops(repairShopsRes.data);
@@ -64,7 +64,7 @@ const CreatePart = () => {
     console.log("Submitting Part Data:", part); // Debugging
 
     try {
-      await axios.post("http://localhost:5000/api/car-part", part, {
+      await axios.post("https://starlit-wisp-63c85a.netlify.app/api/car-part", part, {
         headers: { "Content-Type": "application/json" },
       });
 

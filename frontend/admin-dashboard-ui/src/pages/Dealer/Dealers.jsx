@@ -8,7 +8,7 @@ const Dealers = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/dealers")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/dealers")
       .then((response) => {
         setDealers(response.data);
         console.log(response.data);
@@ -21,7 +21,7 @@ const Dealers = () => {
   // deleting a dealer
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/dealers/${id}`)
+      .delete(`https://starlit-wisp-63c85a.netlify.app/api/dealers/${id}`)
       .then((response) => {
         console.log(response.data);
         setDealers(dealers.filter((dealer) => dealer.id !== id));

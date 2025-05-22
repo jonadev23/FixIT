@@ -7,7 +7,7 @@ const Parts = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/car-parts")
+      .get("https://starlit-wisp-63c85a.netlify.app/api/car-parts")
       .then((response) => {
         setBrands(response.data);
         console.log(response.data);
@@ -20,7 +20,7 @@ const Parts = () => {
   // deleting a brand
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/car-part/${id}`)
+      .delete(`https://starlit-wisp-63c85a.netlify.app/api/car-part/${id}`)
       .then((response) => {
         console.log(response.data);
         setBrands(brands.filter((brand) => brand.id !== id));
