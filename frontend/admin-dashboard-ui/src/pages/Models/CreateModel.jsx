@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { backendUrl } from "../../utils/auth";
 
 const CreateModel = () => {
   // Update your state initialization to use correct types
@@ -20,7 +21,7 @@ const CreateModel = () => {
   // getting all brands
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
+      .get(`${backendUrl}/api/car-brands`)
       .then((response) => {
         setBrands(response.data);
       })
@@ -61,7 +62,7 @@ const handleSubmit = async (e) => {
     };
     
     const response = await axios.post(
-      "https://starlit-wisp-63c85a.netlify.app/api/car-model",
+      `${backendUrl}/api/car-model`,
       payload
     );
     setMessage("Model created successfully!");

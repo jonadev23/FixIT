@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import { backendUrl } from "../utils/auth";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const SignupForm = () => {
     }
 
     try {
-      const response = await axios.post("https://starlit-wisp-63c85a.netlify.app/auth/register", {
+      const response = await axios.post(`${backendUrl}/auth/register`, {
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email,

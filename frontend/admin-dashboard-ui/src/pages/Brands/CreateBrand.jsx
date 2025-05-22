@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { backendUrl } from "../../utils/auth";
 
 const CreateBrand = () => {
   const [brand, setBrand] = useState({
@@ -16,7 +17,7 @@ const CreateBrand = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://starlit-wisp-63c85a.netlify.app/api/car-brand",
+        `${backendUrl}/api/car-brand`,
         brand
       );
       setMessage("brand created successfully!");

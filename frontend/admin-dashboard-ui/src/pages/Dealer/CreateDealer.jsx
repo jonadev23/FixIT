@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { backendUrl } from "../../utils/auth";
 
 const CreateDealer = () => {
   const [dealer, setDealer] = useState({
@@ -18,7 +19,7 @@ const CreateDealer = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://starlit-wisp-63c85a.netlify.app/api/dealers",
+        `${backendUrl}/api/dealers`,
         dealer
       );
       setMessage("Dealer created successfully!");

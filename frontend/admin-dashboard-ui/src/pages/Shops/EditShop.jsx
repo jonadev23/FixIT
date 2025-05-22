@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const EditShop = () => {
   const [currentShop, setCurrentShop] = useState({});
@@ -11,7 +12,7 @@ const EditShop = () => {
 
   useEffect(() => {
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/shops/${id}`)
+      .get(`${backendUrl}/api/shops/${id}`)
       .then((response) => {
         setCurrentShop(response.data);
       })
@@ -19,7 +20,7 @@ const EditShop = () => {
         console.error("Error fetching dealer:", error);
       });
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/dealers")
+      .get(`${backendUrl}/api/dealers`)
       .then((response) => {
         setDealers(response.data);
         console.log(response.data);
@@ -55,7 +56,7 @@ const EditShop = () => {
 
   const handleUpdateShop = () => {
     axios
-      .put(`https://starlit-wisp-63c85a.netlify.app/api/shops/${currentShop.ID}`, currentShop)
+      .put(`${backendUrl}/api/shops/${currentShop.ID}`, currentShop)
       .then((response) => {
         console.log(response.data);
         setEditing(false);

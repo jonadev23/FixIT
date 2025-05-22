@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const Brands = () => {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
+      .get(`${backendUrl}/api/car-brands`)
       .then((response) => {
         setBrands(response.data);
         console.log(response.data);
@@ -20,7 +21,7 @@ const Brands = () => {
   // deleting a brand
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`https://starlit-wisp-63c85a.netlify.app/api/car-brand/${id}`)
+      .delete(`${backendUrl}/api/car-brand/${id}`)
       .then((response) => {
         console.log(response.data);
         setBrands(brands.filter((brand) => brand.id !== id));

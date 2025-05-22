@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const EditBrand = () => {
   const [currentBrand, setCurrentBrand] = useState({});
@@ -10,7 +11,7 @@ const EditBrand = () => {
 
   useEffect(() => {
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-brand/${id}`)
+      .get(`${backendUrl}/${id}`)
       .then((response) => {
         setCurrentBrand(response.data);
         console.log(response.data);
@@ -35,7 +36,7 @@ const EditBrand = () => {
   const handleUpdateBrand = () => {
     axios
       .put(
-        `https://starlit-wisp-63c85a.netlify.app/api/car-brand/${currentBrand.ID}`,
+        `${backendUrl}/${currentBrand.ID}`,
         currentBrand
       )
       .then((response) => {

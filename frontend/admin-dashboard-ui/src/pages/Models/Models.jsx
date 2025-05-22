@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const Models = () => {
   const [models, setmodels] = useState([]);
@@ -8,7 +9,7 @@ const Models = () => {
   // getting all models
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/car-models")
+      .get(`${backendUrl}/api/car-models`)
       .then((response) => {
         setmodels(response.data);
       })
@@ -21,7 +22,7 @@ const Models = () => {
   // deleting a model
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`https://starlit-wisp-63c85a.netlify.app/api/car-model/${id}`)
+      .delete(`${backendUrl}/api/car-model/${id}`)
       .then((response) => {
         setmodels(models.filter((model) => model.id !== id));
         navigate('/dashboard/car-models');

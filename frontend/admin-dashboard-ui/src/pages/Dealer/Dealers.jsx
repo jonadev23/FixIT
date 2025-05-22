@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const Dealers = () => {
   const [dealers, setDealers] = useState([]);
-  const [dealer, setDealer] = useState({});
+  
 
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/dealers")
+      .get(`${backendUrl}/api/dealers`)
       .then((response) => {
         setDealers(response.data);
         console.log(response.data);
@@ -21,7 +22,7 @@ const Dealers = () => {
   // deleting a dealer
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`https://starlit-wisp-63c85a.netlify.app/api/dealers/${id}`)
+      .delete(`${backendUrl}/api/dealers/${id}`)
       .then((response) => {
         console.log(response.data);
         setDealers(dealers.filter((dealer) => dealer.id !== id));

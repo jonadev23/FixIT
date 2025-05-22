@@ -5,6 +5,7 @@ import { CiHeart } from "react-icons/ci";
 import { IoHeartSharp } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { SharedStateContext } from "../../context/SharedStateContext";
+import { backendUrl } from "../../utils/auth";
 
 const SearchResultsPage = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ const SearchResultsPage = () => {
   useEffect(() => {
     // Fetch brands when component mounts
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
+      .get(`${backendUrl}/api/car-brands`)
       .then((response) => {
         setBrands(response.data);
         console.log(response.data);
@@ -82,7 +83,7 @@ const SearchResultsPage = () => {
     setLoading(true);
     axios
       .get(
-        `https://starlit-wisp-63c85a.netlify.app/api/car-parts/search?${requestParams.toString()}`
+        `${backendUrl}/api/car-parts/search?${requestParams.toString()}`
       )
       .then((response) => {
         setCarParts(response.data.results);

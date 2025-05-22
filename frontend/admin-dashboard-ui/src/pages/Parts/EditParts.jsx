@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const EditPart = () => {
   const [currentPart, setCurrentPart] = useState({});
@@ -10,7 +11,7 @@ const EditPart = () => {
 
   useEffect(() => {
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-part/${id}`)
+      .get(`${backendUrl}/api/car-part/${id}`)
       .then((response) => {
         setCurrentPart(response.data);
         console.log(response.data);
@@ -34,7 +35,7 @@ const EditPart = () => {
 
   const handleUpdatePart = () => {
     axios
-      .put(`https://starlit-wisp-63c85a.netlify.app/api/car-part/${currentPart.ID}`, currentPart)
+      .put(`${backendUrl}/api/car-part/${currentPart.ID}`, currentPart)
       .then((response) => {
         console.log(response.data);
         setEditing(false);

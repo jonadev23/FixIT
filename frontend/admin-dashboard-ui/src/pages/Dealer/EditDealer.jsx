@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const EditDealer = () => {
   const [currentDealer, setCurrentDealer] = useState({});
@@ -10,7 +11,7 @@ const EditDealer = () => {
 
   useEffect(() => {
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/dealers/${id}`)
+      .get(`${backendUrl}/api/dealers/${id}`)
       .then((response) => {
         setCurrentDealer(response.data);
         console.log(response.data);

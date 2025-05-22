@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const EditModel = () => {
   const [currentModel, setCurrentModel] = useState({});
@@ -11,7 +12,7 @@ const EditModel = () => {
 
   useEffect(() => {
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-model/${id}`)
+      .get(`${backendUrl}/api/car-model/${id}`)
       .then((response) => {
         setCurrentModel(response.data);
       })
@@ -19,7 +20,7 @@ const EditModel = () => {
         console.error("Error fetching model:", error);
       });
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/car-brands")
+      .get(`${backendUrl}/api/car-brands`)
       .then((response) => {
         setBrands(response.data);
         console.log(response.data);
@@ -56,7 +57,7 @@ const EditModel = () => {
   const handleUpdateBrand = () => {
     axios
       .put(
-        `https://starlit-wisp-63c85a.netlify.app/api/car-model/${currentModel.ID}`,
+        `${backendUrl}/api/car-model/${currentModel.ID}`,
         currentModel
       )
       .then((response) => {

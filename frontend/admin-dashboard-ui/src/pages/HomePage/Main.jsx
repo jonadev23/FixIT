@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SharedStateContext } from "../../context/SharedStateContext";
 import { IoHeartSharp } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
+import { backendUrl } from "../../utils/auth";
 
 const HomePage = () => {
   const [carParts, setCarParts] = useState([]);
@@ -17,7 +18,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/car-parts")
+      .get(`${backendUrl}/api/car-parts`)
       .then((response) => {
         setCarParts(response.data);
         console.log(response.data);

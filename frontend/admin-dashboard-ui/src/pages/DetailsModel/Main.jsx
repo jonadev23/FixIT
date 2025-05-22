@@ -6,6 +6,7 @@ import RenderStars from "./RenderStars";
 import { FaPhoneAlt } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const Main = () => {
   const id = useParams().id;
@@ -17,7 +18,7 @@ const Main = () => {
   // getting single car-part from db
   useEffect(() => {
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/car-model/${parseInt(id)}`)
+      .get(`${backendUrl}/api/car-model/${parseInt(id)}`)
       .then((response) => {
         setPart(response.data);
         // console.log(response.data);
@@ -27,7 +28,7 @@ const Main = () => {
       });
     // getting a particular shop-part
     axios
-      .get(`https://starlit-wisp-63c85a.netlify.app/api/shop-model/${parseInt(id)}`)
+      .get(`${backendUrl}/api/shop-model/${parseInt(id)}`)
       .then((response) => {
         setShopPart(response.data);
         console.log(response.data);

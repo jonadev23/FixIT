@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { FiUser, FiLock, FiPhone, FiMail } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import { backendUrl } from "../utils/auth";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://starlit-wisp-63c85a.netlify.app/auth/login", {
+      const response = await axios.post(`${backendUrl}/auth/login`, {
         email_or_phone: formData.emailOrPhone,
         password: formData.password,
       });

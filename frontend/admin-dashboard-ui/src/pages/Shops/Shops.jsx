@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { backendUrl } from "../../utils/auth";
 
 const Shops = () => {
   const [shops, setShops] = useState([]);
@@ -8,7 +9,7 @@ const Shops = () => {
   // getting all shops
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/shops")
+      .get(`${backendUrl}/api/shops`)
       .then((response) => {
         setShops(response.data);
       })
@@ -20,7 +21,7 @@ const Shops = () => {
   // deleting a shop
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`https://starlit-wisp-63c85a.netlify.app/api/shops/${id}`)
+      .delete(`${backendUrl}/api/shops/${id}`)
       .then((response) => {
         setShops(shops.filter((shop) => shop.id !== id));
         navigate('/dashboard/shops');

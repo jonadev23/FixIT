@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { backendUrl } from "../../utils/auth";
 
 const CreateShop = () => {
   const [shop, setShop] = useState({
@@ -15,7 +16,7 @@ const CreateShop = () => {
   // getting all dealers
   useEffect(() => {
     axios
-      .get("https://starlit-wisp-63c85a.netlify.app/api/dealers")
+      .get(`${backendUrl}/api/dealers`)
       .then((response) => {
         setDealers(response.data);
       })
@@ -70,7 +71,7 @@ const CreateShop = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://starlit-wisp-63c85a.netlify.app/api/shops",
+        `${backendUrl}/api/shops`,
         shop
       );
       setMessage("shop created successfully!");
