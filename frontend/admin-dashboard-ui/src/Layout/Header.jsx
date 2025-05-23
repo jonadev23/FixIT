@@ -34,7 +34,7 @@ const Header = () => {
       ],
     },
     { text: "Find Service", link: "/services" },
-    { text: "Find a car", link: "/cars" },
+    { text: "Find a car", link: "/car-models" },
     { text: "Blog", link: "/blog" },
   ];
 
