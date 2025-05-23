@@ -90,11 +90,11 @@ func GetAllCarModels(c *fiber.Ctx) error {
 		model := models.CarModel{
 			Name:      request.Name,
 			Make:      request.Make,
-			Image:     "http://127.0.0.1:5000/uploads/" + request.Image,
+			Image:     "https://fixit-wxa9.onrender.com/uploads/" + request.Image,
             Price:      request.Price,
             Condition:  request.Condition,
 			Year:      request.Year,
-			ImageURL:  "http://127.0.0.1:5000/uploads/" + request.ImageURL,
+			ImageURL:  "https://fixit-wxa9.onrender.com/uploads/" + request.ImageURL,
 			BrandID:   request.BrandID,
 			BrandName: request.BrandName,
 		}

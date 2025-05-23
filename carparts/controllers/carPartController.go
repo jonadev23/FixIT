@@ -75,7 +75,7 @@ import (
 		// Create CarPart
 		carPart := models.CarPart{
 			Name:       request.Name,
-			Image:      "http://127.0.0.1:5000/uploads/" + request.Image,
+			Image:      "https://fixit-wxa9.onrender.com/uploads/" + request.Image,
 			Size:       request.Size,
 			Price:      request.Price,
 			Condition:  request.Condition,
