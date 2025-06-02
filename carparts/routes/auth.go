@@ -49,6 +49,7 @@ admin.Get("/dashboard", controllers.AdminDashboard)
 	api.Post("/car-model", controllers.CreateModel)
 	api.Delete("/car-model/:id", controllers.DeleteModel)
 	api.Put("/car-model/:id", controllers.UpdateModel)
+	
 		// parts
 	// api.Get("/car-parts", controllers.GetParts)
 	api.Get("/car-part/:id", controllers.GetPartByID)
@@ -65,6 +66,14 @@ admin.Get("/dashboard", controllers.AdminDashboard)
 	api.Post("/auth/google", handlers.GoogleAuthHandler)
 
 	// getting car_part details
-	api.Get("/car-models", controllers.GetAllCarModels)
+	// api.Get("/car-models", controllers.GetAllCarModelSale)
 	api.Get("/shop-model/:id", controllers.GetShopModelByID)
+	api.Get("/car-models/search", controllers.SearchModels)
+
+	// models sale
+	api.Get("/car-model-sale", controllers.GetModelSale)
+	api.Get("/car-model-sale/:id", controllers.GetModelSaleByID)
+	api.Post("/car-model-sale", controllers.CreateModelSale)
+	api.Delete("/car-model-sale/:id", controllers.DeleteModelSale)
+	api.Put("/car-model-sale/:id", controllers.UpdateModelSale)
 }

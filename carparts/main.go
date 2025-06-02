@@ -28,7 +28,7 @@ func main() {
 	
 	// Enable CORS for all routes
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "https://starlit-wisp-63c85a.netlify.app", // Allow React frontend
+		AllowOrigins: "http://localhost:5173", // Allow React frontend
 		AllowMethods: "GET,POST,PUT,DELETE",  // Allow specific methods
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization", // Allow headers
 		AllowCredentials: true, // Allow credentials
@@ -38,10 +38,10 @@ func main() {
 	config.ConnectDB()
 	
 // Drop existing tables
-	// config.DB.Migrator().DropTable(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{},&models.ShopModel{})
+	config.DB.Migrator().DropTable(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarModelSale{}, &models.CarPart{},&models.ShopPart{},&models.ShopModel{})
 
 	   // Run migrations
-	config.DB.AutoMigrate(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarPart{},&models.ShopPart{},&models.ShopModel{})
+	config.DB.AutoMigrate(&models.User{},&models.Dealer{},&models.RepairShop{},&models.CarBrand{},&models.CarModel{}, &models.CarModelSale{}, &models.CarPart{},&models.ShopPart{},&models.ShopModel{})
 	 
 	// Setup routes
 	routes.SetupRoutes(app)

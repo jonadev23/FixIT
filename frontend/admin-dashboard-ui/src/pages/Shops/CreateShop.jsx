@@ -13,6 +13,7 @@ const CreateShop = () => {
   });
   const [dealers, setDealers] = useState([]);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   // getting all dealers
   useEffect(() => {
     axios
@@ -39,12 +40,6 @@ const CreateShop = () => {
     }
   };
 
-  // const handleChange = (e) => {
-  //   setShop({ ...shop, [e.target.name]: e.target.value });
-  //   console.log(shop);
-
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -53,11 +48,26 @@ const CreateShop = () => {
       // Convert to number if it's not empty, otherwise keep as empty string
       // You could also default to 0 or null instead of empty string
       const numericValue = value === "" ? "" : Number(value);
-
-      setShop({
-        ...shop,
-        [name]: !isNaN(numericValue) ? numericValue : shop.rating,
-      });
+      // Validate range
+      if (numericValue < 0) {
+        setError("Minimum value is 0");
+        setShop({
+          ...shop,
+          [name]: !isNaN(numericValue) ? numericValue : 0, // Changed shop.rating to 0
+        });
+      } else if (numericValue > 5) {
+        setError("Maximum value is 5");
+        setShop({
+          ...shop,
+          [name]: !isNaN(numericValue) ? numericValue : 5, // Changed shop.rating to 5
+        });
+      } else {
+        setError("");
+        setShop({
+          ...shop,
+          [name]: !isNaN(numericValue) ? numericValue : shop.rating,
+        });
+      }
     } else {
       // For non-rating fields, update normally
       setShop({
@@ -67,13 +77,17 @@ const CreateShop = () => {
     }
   };
 
+  const handleBlur = () => {
+    // Ensure value is set properly when leaving the field
+    if (value === "") {
+      setValue(0);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${backendUrl}/api/shops`,
-        shop
-      );
+      const response = await axios.post(`${backendUrl}/api/shops`, shop);
       setMessage("shop created successfully!");
     } catch (error) {
       console.error("Error creating shop:", error);
@@ -130,9 +144,11 @@ const CreateShop = () => {
             name="rating"
             value={shop.rating}
             onChange={handleChange}
+            onBlur={handleBlur}
             className="w-full p-2 border border-gray-300 rounded"
             required
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
 
         <button

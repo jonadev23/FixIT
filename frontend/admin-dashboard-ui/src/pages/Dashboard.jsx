@@ -11,6 +11,9 @@ import EditBrand from "./Brands/EditBrand";
 import Models from "./Models/Models";
 import CreateModel from "./Models/CreateModel";
 import EditModel from "./Models/EditModel";
+import ModelSale from "./ModelSale/Models";
+import CreateModelSale from "./ModelSale/CreateModel";
+import EditModelSale from "./ModelSale/EditModel";
 import Parts from "./Parts/Parts";
 import CreatePart from "./Parts/CreatePart";
 import EditPart from "./Parts/EditParts";
@@ -54,6 +57,9 @@ const Dashboard = () => {
             <li className="p-2 hover:bg-gray-700">
               <Link to="/dashboard/car-parts">Car Parts</Link>
             </li>
+            <li className="p-2 hover:bg-gray-700">
+              <Link to="/dashboard/car-model-sale">Car ModelSale</Link>
+            </li>
           </ul>
         </nav>
         <button
@@ -88,6 +94,9 @@ const Dashboard = () => {
           <Route path="/car-parts" element={<Parts />} />
           <Route path="/create-part" element={<CreatePart />} />
           <Route path="/edit-part/:id" element={<EditPart />} />
+          <Route path="/car-model-sale" element={<ModelSale />} />
+          <Route path="/create-model-sale" element={<CreateModelSale />} />
+          <Route path="/edit-model-sale/:id" element={<EditModelSale />} />
         </Routes>
       </main>
     </div>

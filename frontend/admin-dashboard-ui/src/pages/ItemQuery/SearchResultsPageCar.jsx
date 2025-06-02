@@ -82,7 +82,7 @@ const SearchResultsPage = () => {
     setLoading(true);
     axios
       .get(
-        `http://localhost:5000/api/car-parts/search?${requestParams.toString()}`
+        `http://localhost:5000/api/car-models/search?${requestParams.toString()}`
       )
       .then((response) => {
         setCarParts(response.data.results);
@@ -106,7 +106,7 @@ const SearchResultsPage = () => {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     if (filters.condition) params.set("condition", filters.condition);
-    navigate(`/search?${params.toString()}`);
+    navigate(`/search-car?${params.toString()}`);
   };
 
   // Update your price filter handler to only update the appliedPriceFilters
@@ -130,7 +130,7 @@ const SearchResultsPage = () => {
     if (filters.minPrice) newParams.set("minPrice", filters.minPrice);
     if (filters.maxPrice) newParams.set("maxPrice", filters.maxPrice);
 
-    navigate(`/search?${newParams.toString()}`);
+    navigate(`/search-car?${newParams.toString()}`);
   };
 
   // Condition checkbox clicks
@@ -154,7 +154,7 @@ const SearchResultsPage = () => {
     if (minPrice) newParams.set("minPrice", minPrice);
     if (maxPrice) newParams.set("maxPrice", maxPrice);
 
-    navigate(`/search?${newParams.toString()}`);
+    navigate(`/search-car?${newParams.toString()}`);
   };
 
   // Add a handler for brand selection
@@ -179,7 +179,7 @@ const SearchResultsPage = () => {
     if (maxPrice) newParams.set("maxPrice", maxPrice);
     if (selected) newParams.set("brand", selected);
 
-    navigate(`/search?${newParams.toString()}`);
+    navigate(`/search-car?${newParams.toString()}`);
   };
 
   // Wishlist toggle
@@ -228,7 +228,7 @@ const SearchResultsPage = () => {
     appliedPriceFilters.minPrice || appliedPriceFilters.maxPrice;
 
   return (
-    <div className="flex">
+    <div className="flex px-[10%]">
       {error && (
         <div className="fixed top-0 left-0 right-0 bg-red-100 text-red-700 p-4 text-center">
           {error}
@@ -311,24 +311,37 @@ const SearchResultsPage = () => {
                 key={brand.name}
                 onClick={() => handleBrandFilter(brand.name)}
                 className={`cursor-pointer p-2 border rounded-lg flex flex-col items-center ${
-                  selectedBrand === brand.name
+                  filters.brand === brand.name
                     ? "border-blue-500 bg-blue-50"
                     : "border-gray-200"
                 }`}
               >
-                <div className="  mt-2">
-                  {brand.CarModels?.map(
-                    (model, index) =>
-                      model.image_url && (
-                        <div key={index}>
-                          <img
-                            src={model.image_url}
-                            alt={`Model ${index}`}
-                            className="rounded-full ring ring-gray-300 w-6 h-6 object-cover"
-                          />
-                          <div className="text-xs">{model.brand_name}</div>
-                        </div>
-                      )
+                {/* Show only one logo per brand - modified section */}
+                <div className="mt-2 flex flex-col items-center">
+                  {brand.logo_url ? ( // If brand has its own logo
+                    <>
+                      <img
+                        src={brand.logo_url}
+                        alt={brand.name}
+                        className="rounded-full ring ring-gray-300 w-6 h-6 object-cover"
+                      />
+                      <div className="text-xs mt-1">{brand.name}</div>
+                    </>
+                  ) : brand.CarModels?.find((model) => model.image_url) ? ( // Fallback to first model logo
+                    <>
+                      <img
+                        src={
+                          brand.CarModels.find((model) => model.image_url)
+                            .image_url
+                        }
+                        alt={brand.name}
+                        className="rounded-full ring ring-gray-300 w-6 h-6 object-cover"
+                      />
+                      <div className="text-xs mt-1">{brand.name}</div>
+                    </>
+                  ) : (
+                    // Fallback to just name
+                    <div className="text-xs">{brand.name}</div>
                   )}
                 </div>
               </div>
@@ -377,12 +390,12 @@ const SearchResultsPage = () => {
               {filters.condition && ` (${filters.condition})`}
               {priceFiltersActive && ` within price range`}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {partsToDisplay.map((part) => (
                 <div key={part.ID} className="card">
                   <Link to={`/details/${parseInt(part.ID)}`}>
                     <section className="bg-white rounded-4xl">
-                      <div className="text-orange-300 font-bold text-sm absolute top-4 left-4">
+                      <div className="text-orange-300 font-bold text-sm absolute bottom-4 right-4">
                         {part.condition}
                       </div>
                       {part.CarModel?.image_url && (

@@ -9,7 +9,7 @@ const Models = () => {
   // getting all models
   useEffect(() => {
     axios
-      .get(`${backendUrl}/api/car-models`)
+      .get(`${backendUrl}/api/car-model-sale`)
       .then((response) => {
         setmodels(response.data);
       })
@@ -18,23 +18,25 @@ const Models = () => {
       });
   }, []);
 
+
   // deleting a model
   const handleConfirmDelete = (id) => {
     axios
-      .delete(`${backendUrl}/api/car-model/${id}`)
+      .delete(`${backendUrl}/api/car-model-sale/${id}`)
       .then((response) => {
         setmodels(models.filter((model) => model.id !== id));
-        navigate("/dashboard/car-models");
+        navigate('/dashboard/car-models');
       })
       .catch((error) => {
         console.error("Error deleting model:", error);
       });
   };
 
+
   return (
     <div>
       <h2 className="text-2xl font-bold">Models</h2>
-      <Link to="/dashboard/create-model">
+      <Link to="/dashboard/create-model-sale">
         <button className="btn btn-neutral my-4">Create</button>
       </Link>
 
@@ -45,6 +47,9 @@ const Models = () => {
             <th>#</th>
             <th>Name</th>
             <th>Make</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Condition</th>
             <th>Year</th>
             <th>Brand Name</th>
             <th>Logo Url</th>
@@ -57,11 +62,14 @@ const Models = () => {
               <td>{model.ID}</td>
               <td>{model.name}</td>
               <td>{model.make}</td>
+              <td>{model.image}</td>
+              <td>{model.price}</td>
+              <td>{model.condition}</td>
               <td>{model.year}</td>
               <td>{model.brand_name}</td>
               <td>{model.image_url}</td>
               <td>
-                <Link to={`/dashboard/edit-model-sale/${model.ID}`}>
+                <Link to={`/dashboard/edit-model/${model.ID}`}>
                   <button className="btn btn-primary mx-4">Edit</button>
                 </Link>
                 <button

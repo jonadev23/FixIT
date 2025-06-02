@@ -12,7 +12,7 @@ const EditModel = () => {
 
   useEffect(() => {
     axios
-      .get(`${backendUrl}/api/car-model/${id}`)
+      .get(`${backendUrl}/api/car-model-sale/${id}`)
       .then((response) => {
         setCurrentModel(response.data);
       })
@@ -56,7 +56,10 @@ const EditModel = () => {
 
   const handleUpdateBrand = () => {
     axios
-      .put(`${backendUrl}/api/car-model/${currentModel.ID}`, currentModel)
+      .put(
+        `${backendUrl}/api/car-model-sale/${currentModel.ID}`,
+        currentModel
+      )
       .then((response) => {
         console.log(response.data);
         setEditing(false);
@@ -87,6 +90,30 @@ const EditModel = () => {
             type="text"
             name="make"
             value={currentModel.make}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
+            name="image"
+            value={currentModel.image}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
+            name="price"
+            value={currentModel.price}
+            onChange={handleChange}
+            className="input my-2"
+            required
+          />
+          <input
+            type="text"
+            name="condition"
+            value={currentModel.condition}
             onChange={handleChange}
             className="input my-2"
             required

@@ -82,9 +82,7 @@ const SearchResultsPage = () => {
 
     setLoading(true);
     axios
-      .get(
-        `${backendUrl}/api/car-parts/search?${requestParams.toString()}`
-      )
+      .get(`${backendUrl}/api/car-parts/search?${requestParams.toString()}`)
       .then((response) => {
         setCarParts(response.data.results);
         setHasSearched(true);
@@ -242,7 +240,7 @@ const SearchResultsPage = () => {
       )}
 
       {/* Sidebar Filters */}
-      <aside className="w-[20vw] p-4 ">
+      <aside className="w-[20vw] p-4">
         {/* price filters */}
         <div className="sticky top-4">
           {/* Price Range Filter */}
@@ -322,23 +320,33 @@ const SearchResultsPage = () => {
                     : "border-gray-200"
                 }`}
               >
-                <div className="mt-2 flex gap-2 flex-wrap">
-                  {[
-                    ...new Map(
-                      brand.CarModels?.filter((model) => model.image_url).map(
-                        (model) => [model.image_url, model]
-                      ) // Use image_url as key
-                    ).values(),
-                  ].map((model, index) => (
-                    <div key={index} className="flex flex-col items-center">
+                {/* Show only one logo per brand - modified section */}
+                <div className="mt-2 flex flex-col items-center">
+                  {brand.logo_url ? ( // If brand has its own logo
+                    <>
                       <img
-                        src={model.image_url}
-                        alt={`Model ${index}`}
+                        src={brand.logo_url}
+                        alt={brand.name}
                         className="rounded-full ring ring-gray-300 w-6 h-6 object-cover"
                       />
-                      <div className="text-xs">{model.brand_name}</div>
-                    </div>
-                  ))}
+                      <div className="text-xs mt-1">{brand.name}</div>
+                    </>
+                  ) : brand.CarModels?.find((model) => model.image_url) ? ( // Fallback to first model logo
+                    <>
+                      <img
+                        src={
+                          brand.CarModels.find((model) => model.image_url)
+                            .image_url
+                        }
+                        alt={brand.name}
+                        className="rounded-full ring ring-gray-300 w-6 h-6 object-cover"
+                      />
+                      <div className="text-xs mt-1">{brand.name}</div>
+                    </>
+                  ) : (
+                    // Fallback to just name
+                    <div className="text-xs">{brand.name}</div>
+                  )}
                 </div>
               </div>
             ))}

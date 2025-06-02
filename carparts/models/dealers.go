@@ -30,6 +30,7 @@ type CarBrand struct {
     gorm.Model
     Name      string     `json:"name"`
     CarModels []CarModel `gorm:"foreignKey:BrandID"`
+    CarModelSale []CarModelSale `gorm:"foreignKey:BrandID"`
 }
 
 // CarPart model
@@ -44,18 +45,15 @@ type CarPart struct {
     CarModel   CarModel `gorm:"foreignKey:CarModelID;references:ID"`
 }
 
-// CarModel model
+// CarModel model for creating car parts
 type CarModel struct {
     gorm.Model
     Name      string    `json:"name"`
     Make      string    `json:"make"`
-    Image      string   `json:"image"`
-    Price      float64  `json:"price"`
-    Condition  string   `json:"condition"`
     Year      string    `json:"year"`
-    ImageURL  string    `json:"image_url"`
     BrandID   uint      `json:"brand_id"`
     BrandName string    `json:"brand_name"`
+    ImageURL  string    `json:"image_url"`
     Parts     []CarPart `gorm:"foreignKey:CarModelID"` // Bidirectional relationship
 }
 
@@ -70,7 +68,6 @@ type ShopPart struct {
     CarPart      CarPart    `gorm:"foreignKey:CarPartID"`
 }
 
-
 // ShopPart model (Mapping CarParts to RepairShops)
 type ShopModel struct {
     gorm.Model
@@ -79,6 +76,19 @@ type ShopModel struct {
     Stock        int       `json:"stock"`         // Quantity available in the shop
     Price        float64   `json:"price"`         // Price of the part in the shop
     RepairShop   RepairShop `gorm:"foreignKey:RepairShopID"`
-    CarModel      CarModel    `gorm:"foreignKey:CarModelID"`
+    CarModelSale      CarModelSale    `gorm:"foreignKey:CarModelID"`
 }
 
+// CarModel model for sale
+type CarModelSale struct {
+    gorm.Model
+    Name      string    `json:"name"`
+    Make      string    `json:"make"`
+    Image      string   `json:"image"`
+    Price      float64  `json:"price"`
+    Condition  string   `json:"condition"`
+    Year      string    `json:"year"`
+    ImageURL  string    `json:"image_url"`
+    BrandID   uint      `json:"brand_id"`
+    BrandName string    `json:"brand_name"`   
+}

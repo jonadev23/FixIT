@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import { isAuthenticated } from "./utils/auth";
 import Main from "./pages/HomePage/Main";
@@ -11,6 +16,7 @@ import LoginForm from "./pages/SignIn";
 import WishList from "./pages/WishList/WishList";
 import { SharedStateProvider } from "./context/SharedStateContext";
 import Item from "./pages/ItemQuery/SearchResultsPage";
+import ItemCar from "./pages/ItemQuery/SearchResultsPageCar";
 import { AuthProvider } from "./context/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -71,6 +77,14 @@ function App() {
                   element={
                     <Layout>
                       <Item />
+                    </Layout>
+                  }
+                />
+                <Route
+                  path="/search-car"
+                  element={
+                    <Layout>
+                      <ItemCar />
                     </Layout>
                   }
                 />

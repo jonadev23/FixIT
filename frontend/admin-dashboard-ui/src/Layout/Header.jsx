@@ -33,9 +33,9 @@ const Header = () => {
         { text: "Accessories", link: "/accessories" },
       ],
     },
-    { text: "Find Service", link: "/services" },
+    // { text: "Find Service", link: "/services" },
     { text: "Find a car", link: "/car-models" },
-    { text: "Blog", link: "/blog" },
+    // { text: "Blog", link: "/blog" },
   ];
 
   return (
@@ -51,12 +51,19 @@ const Header = () => {
           </Link>
         </div>
 
-        <Link
+        {/* <Link
           to="/login"
           className="flex items-center gap-1 bg-black md:hidden text-white px-4 py-2 rounded-full hover:bg-blue-700"
         >
           Login
-        </Link>
+        </Link> */}
+        {user ? (
+          <div className="flex items-center md:hidden justify-center w-8 h-8 bg-black text-white rounded-full font-semibold text-lg hover:bg-blue-700 transition-colors">
+            {user.first_name?.[0]?.toUpperCase() || "?"}
+          </div>
+        ) : (
+          <></>
+        )}
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
@@ -67,7 +74,8 @@ const Header = () => {
                   className="flex items-center gap-1 cursor-pointer hover:text-blue-600"
                   onClick={item.submenu ? toggleSubmenu : undefined}
                 >
-                  {item.text}
+                  <Link to={item.link}>{item.text}</Link>
+
                   {item.submenu && (
                     <span className="text-sm">
                       {isSubmenuOpen ? <FiChevronUp /> : <FiChevronDown />}
@@ -102,12 +110,18 @@ const Header = () => {
             <span className="text-sm text-red-500">{wishlist.length}</span>
           </Link>
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1 bg-black text-white px-4 py-2 rounded-full hover:bg-blue-700"
-            >
-              Logout
-            </button>
+            <>
+              {" "}
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1 bg-black text-white px-4 py-2 rounded-full hover:bg-blue-700"
+              >
+                Logout
+              </button>
+              <div className="flex items-center justify-center w-8 h-8 bg-black text-white rounded-full font-semibold text-lg hover:bg-blue-700 transition-colors">
+                {user.first_name?.[0]?.toUpperCase() || "?"}
+              </div>
+            </>
           ) : (
             <Link
               to="/login"

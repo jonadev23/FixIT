@@ -18,7 +18,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get(`${backendUrl}/api/car-models`)
+      .get(`${backendUrl}/api/car-model-sale`)
       .then((response) => {
         setcarModels(response.data);
         console.log(response.data);
@@ -45,7 +45,7 @@ const HomePage = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+      navigate(`/search-car?q=${encodeURIComponent(searchTerm)}`);
     }
   };
 
@@ -57,9 +57,9 @@ const HomePage = () => {
       <h1 className="font-bold items-center text-center pt-16 px-16 text-xl md:text-2xl">
         Find the models you are looking for
       </h1>
-      <p className="text-sm text-center pb-6">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur
-        adipisicing elit
+      <p className="text-sm text-center py-6">
+        Cars are machines with wheels that help people move from place to place.
+        They make travel faster and easier.
       </p>
       {/* Search form */}
       <div style={{ margin: "20px" }}>
@@ -76,7 +76,7 @@ const HomePage = () => {
             >
               <input
                 type="text"
-                placeholder="Search models..."
+                placeholder="Search cars..."
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{

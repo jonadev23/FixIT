@@ -7,6 +7,9 @@ const CreateModel = () => {
   const [model, setModel] = useState({
     name: "",
     make: "",
+    image: "",
+    price: 0, // Initialize as number
+    condition: "",
     year: "",
     brand_id: 0, // Initialize as number
     brand_name: "",
@@ -47,24 +50,27 @@ const CreateModel = () => {
 
     setModel({ ...model, [e.target.name]: value });
   };
-  // Update handleSubmit to ensure correct payload
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Convert remaining string numbers to actual numbers
-      const payload = {
-        ...model,
-        price: parseFloat(model.price),
-        brand_id: parseInt(model.brand_id, 10),
-      };
-
-      const response = await axios.post(`${backendUrl}/api/car-model`, payload);
-      setMessage("Model created successfully!");
-    } catch (error) {
-      console.error("Error creating model:", error);
-      setMessage("Failed to create model.");
-    }
-  };
+ // Update handleSubmit to ensure correct payload
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Convert remaining string numbers to actual numbers
+    const payload = {
+      ...model,
+      price: parseFloat(model.price),
+      brand_id: parseInt(model.brand_id, 10)
+    };
+    
+    const response = await axios.post(
+      `${backendUrl}/api/car-model-sale`,
+      payload
+    );
+    setMessage("Model created successfully!");
+  } catch (error) {
+    console.error("Error creating model:", error);
+    setMessage("Failed to create model.");
+  }
+};
 
   return (
     <div className="max-w-md mx-auto mt-10 p-5 bg-white shadow-md rounded">
@@ -93,7 +99,39 @@ const CreateModel = () => {
             required
           />
         </div>
-
+        <div className="mb-3">
+          <label className="block font-medium">Image</label>
+          <input
+            type="text"
+            name="image"
+            value={model.image}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="block font-medium">Price</label>
+          <input
+            type="number"
+            name="price"
+            value={model.price}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="block font-medium">Condition</label>
+          <input
+            type="text"
+            name="condition"
+            value={model.condition}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
         <div className="mb-3">
           <label className="block font-medium">Year</label>
           <input

@@ -29,11 +29,11 @@ func GetShopModelByID(c *fiber.Ctx) error {
     query := strings.ToLower(c.Query("q"))
     
     if query == "" {
-        return c.JSON([]models.CarModel{})
+        return c.JSON([]models.CarModelSale{})
     }
     
-    var Models []models.CarModel
-    err := config.DB.Preload("CarModel").
+    var Models []models.CarModelSale
+    err := config.DB.Preload("CarModelSale").
         Where("LOWER(name) LIKE ?", "%"+query+"%").
         Or("LOWER(description) LIKE ?", "%"+query+"%").
         Or("id IN (?)", config.DB.Table("car_models").
@@ -52,90 +52,85 @@ func GetShopModelByID(c *fiber.Ctx) error {
 
 
 func SearchModels(c *fiber.Ctx) error {
-    // Pull raw query params
+    // Pull query parameters
     query := strings.TrimSpace(c.Query("q"))
     condition := strings.TrimSpace(c.Query("condition"))
     minPrice := strings.TrimSpace(c.Query("minPrice"))
     maxPrice := strings.TrimSpace(c.Query("maxPrice"))
-    brandName := strings.TrimSpace(c.Query("brand")) // Add brand filter parameter
-   
-    // Require at least one filter
+    brandName := strings.TrimSpace(c.Query("brand"))
+
+    // Validate at least one filter exists
     if query == "" && condition == "" && minPrice == "" && maxPrice == "" && brandName == "" {
         return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
             "error": "Please provide a search term, condition filter, brand, or price range",
         })
     }
-   
-    // Start base query - always join with car_models to avoid join conflicts later
-    dbQuery := config.DB.Preload("CarModel").
-        Joins("JOIN car_models ON car_models.id = car_Models.car_model_id")
-   
-    // Text search - fixed ambiguous column references
+
+    // Start base query for CarModelSale
+    dbQuery := config.DB.Model(&models.CarModelSale{})
+
+    // Text search
     if query != "" {
         searchTerm := "%" + strings.ToLower(query) + "%"
-        dbQuery = dbQuery.Where("(LOWER(car_Models.name) LIKE ? OR LOWER(car_models.name) LIKE ? OR LOWER(car_models.make) LIKE ?)",
-            searchTerm, searchTerm, searchTerm)
+        dbQuery = dbQuery.Where(
+            "(LOWER(name) LIKE ? OR LOWER(make) LIKE ?)",
+            searchTerm, searchTerm,
+        )
     }
-   
-    // Condition filter - qualified with table name
+
+    // Condition filter
     if condition != "" {
-        dbQuery = dbQuery.Where("car_Models.condition = ?", condition)
+        dbQuery = dbQuery.Where("condition = ?", condition)
     }
-   
-    // Brand filter - using brand_name field
+
+    // Brand filter
     if brandName != "" {
-        dbQuery = dbQuery.Where("LOWER(car_models.brand_name) = ?", strings.ToLower(brandName))
+        dbQuery = dbQuery.Where("LOWER(brand_name) = ?", strings.ToLower(brandName))
     }
-   
+
     // Price range handling
     if minPrice != "" || maxPrice != "" {
-        // Parse and validate min price
-        var minVal, maxVal int
+        var minVal, maxVal float64
         var err error
-       
+
         if minPrice != "" {
-            minVal, err = strconv.Atoi(minPrice)
+            minVal, err = strconv.ParseFloat(minPrice, 64)
             if err != nil || minVal < 0 {
                 return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
                     "error": "Invalid minimum price value",
                 })
             }
+            dbQuery = dbQuery.Where("price >= ?", minVal)
         }
-        // Parse and validate max price
+
         if maxPrice != "" {
-            maxVal, err = strconv.Atoi(maxPrice)
+            maxVal, err = strconv.ParseFloat(maxPrice, 64)
             if err != nil || maxVal < 0 {
                 return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
                     "error": "Invalid maximum price value",
                 })
             }
+            dbQuery = dbQuery.Where("price <= ?", maxVal)
         }
-        // Validate price range
+
         if minPrice != "" && maxPrice != "" && minVal > maxVal {
             return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
                 "error": "Minimum price cannot exceed maximum price",
             })
         }
-        // Apply filters - qualified with table name
-        if minPrice != "" {
-            dbQuery = dbQuery.Where("car_Models.price >= ?", minVal)
-        }
-        if maxPrice != "" {
-            dbQuery = dbQuery.Where("car_Models.price <= ?", maxVal)
-        }
     }
-   
+
     // Execute query
-    var Models []models.CarModel
-    if err := dbQuery.Find(&Models).Error; err != nil {
+    var results []models.CarModelSale
+    if err := dbQuery.Find(&results).Error; err != nil {
         return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-            "error":   "Failed to search car Models",
+            "error":   "Failed to search car models",
             "details": err.Error(),
         })
     }
-   
+
     return c.JSON(fiber.Map{
-        "count":   len(Models),
-        "results": Models,
+        "count":   len(results),
+        "results": results,
     })
 }

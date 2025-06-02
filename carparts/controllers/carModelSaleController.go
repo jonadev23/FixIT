@@ -7,14 +7,14 @@ import (
 )
 
 // GetModelByID retrieves a single model by ID
-	func GetModelByID(c *fiber.Ctx) error {
+	func GetModelSaleByID(c *fiber.Ctx) error {
 		id := c.Params("id")
 	
-		var model models.CarModel
+		var model models.CarModelSale
 		result := config.DB.First(&model, id)
 	
 		if result.Error != nil {
-			return c.Status(404).JSON(fiber.Map{"error": "model not found"})
+			return c.Status(404).JSON(fiber.Map{"error": "model for sale not found"})
 		}
 	
 		return c.JSON(model)
@@ -23,8 +23,8 @@ import (
 	
 
 	// GetCarParts returns all car parts with their name, price, size, image, and related car model
-func GetAllCarModels(c *fiber.Ctx) error {
-    var carModels []models.CarModel
+func GetAllCarModelSale(c *fiber.Ctx) error {
+    var carModels []models.CarModelSale
 
     // Preload the CarModel and its Brand information
     if err := config.DB.Preload("CarBrand").Find(&carModels).Error; err != nil {
@@ -35,8 +35,8 @@ func GetAllCarModels(c *fiber.Ctx) error {
 }
 	
 
-	func GetModels(c *fiber.Ctx) error {
-		var models []models.CarModel
+	func GetModelSale(c *fiber.Ctx) error {
+		var models []models.CarModelSale
 		
 		// Use Preload to fetch related RepairShops
 		result := config.DB.Find(&models)
@@ -67,7 +67,7 @@ func GetAllCarModels(c *fiber.Ctx) error {
 	// 	return c.Status(201).JSON(model)
 	// }
 
-	func CreateModel(c *fiber.Ctx) error {
+	func CreateModelSale(c *fiber.Ctx) error {
 		// Define a request struct to properly handle the image field
 		var request struct {
 			Name      string `json:"name"`
@@ -88,9 +88,12 @@ func GetAllCarModels(c *fiber.Ctx) error {
 		
 		// Create the CarModel with the prefixed image URL
 		// https://fixit-wxa9.onrender.com
-		model := models.CarModel{
+		model := models.CarModelSale{
 			Name:      request.Name,
 			Make:      request.Make,
+			Image:     "http://127.0.0.1:5000/uploads/" + request.Image, 
+            Price:      request.Price,
+            Condition:  request.Condition,
 			Year:      request.Year,
 			ImageURL:  "http://127.0.0.1:5000/uploads/" + request.ImageURL,
 			BrandID:   request.BrandID,
@@ -107,9 +110,9 @@ func GetAllCarModels(c *fiber.Ctx) error {
 	}
 
 	// Updatemodel ...
-func UpdateModel(c *fiber.Ctx) error {
+func UpdateModelSale(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var model models.CarModel
+	var model models.CarModelSale
 	
 	// Parse the JSON request body into the model struct
 	if err := c.BodyParser(&model); err != nil {
@@ -127,10 +130,10 @@ func UpdateModel(c *fiber.Ctx) error {
 }
 
 // Deletemodel ...
-func DeleteModel(c *fiber.Ctx) error {
+func DeleteModelSale(c *fiber.Ctx) error {
 	id := c.Params("id")
 	
-	result := config.DB.Debug().Delete(&models.CarModel{}, id)
+	result := config.DB.Debug().Delete(&models.CarModelSale{}, id)
 	
 	if result.Error != nil {
 		return c.Status(404).JSON(fiber.Map{"error": "model not found"})
