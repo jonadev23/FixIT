@@ -47,8 +47,8 @@ func main() {
 	config.ConnectDB()
 
 	// Drop existing tables
-	config.DB.Migrator().
-		DropTable(&models.User{}, &models.Dealer{}, &models.RepairShop{}, &models.CarBrand{}, &models.CarModel{}, &models.CarModelSale{}, &models.CarPart{}, &models.ShopPart{}, &models.ShopModel{})
+	// config.DB.Migrator().
+	// 	DropTable(&models.User{}, &models.Dealer{}, &models.RepairShop{}, &models.CarBrand{}, &models.CarModel{}, &models.CarModelSale{}, &models.CarPart{}, &models.ShopPart{}, &models.ShopModel{})
 
 	// Run migrations
 	config.DB.AutoMigrate(
