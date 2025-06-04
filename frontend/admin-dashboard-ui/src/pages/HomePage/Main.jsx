@@ -154,10 +154,11 @@ const HomePage = () => {
                       e.stopPropagation();
                       handleWishlistClick(part, e);
                     }}
+                    className="text-xl hover:cursor-pointer"
                   >
                     {isInWishlist(part.ID) ? <IoHeartSharp /> : <CiHeart />}
                   </button>
-                  <div className="text-[7px]">
+                  <div className="text-xs">
                     {isInWishlist(part.ID)
                       ? "Remove from wishlist"
                       : "Add to wishlist"}
@@ -174,7 +175,7 @@ const HomePage = () => {
         <></>
       ) : (
         <center>
-          <Link to="/sign-up" className="btn btn-neutral rounded-3xl">
+          <Link to="/sign-up" className="btn btn-neutral my-6 rounded-3xl">
             Sign up to continue
           </Link>
         </center>

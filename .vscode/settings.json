@@ -1,2 +1,10 @@
 {
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.go$",
+        "cmd": "golines ${file} -w"
+      }
+    ]
+  }
 }

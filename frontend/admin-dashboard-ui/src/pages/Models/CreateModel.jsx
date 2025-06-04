@@ -107,14 +107,22 @@ const CreateModel = () => {
         </div>
         <div className="mb-3">
           <label className="block font-medium">Logo</label>
-          <input
-            type="text"
+
+          <select
             name="image_url"
             value={model.image_url}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded"
             required
-          />
+          >
+            <option value="">Select an image</option>
+            <option>Honda.jpg</option>
+            <option>Mazda.jpg</option>
+            <option>Toyota.jpg</option>
+            <option>Subaru.jpg</option>
+            <option>Mercedes.jpg</option>
+            {/* Add more options as needed */}
+          </select>
         </div>
         <div className="mb-3">
           <label className="block font-medium">Car Brand</label>

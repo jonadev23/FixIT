@@ -26,7 +26,7 @@ const PrivateRoute = ({ element }) => {
 
 function App() {
   return (
-    <div className="bg-[#f5f9fc]">
+    <div className="bg-[#f5f9fc] dark:text-black">
       <SharedStateProvider>
         <GoogleOAuthProvider clientId="500858494226-2n5qnpmuddp3av0tvi2p9ajh2gmgougo.apps.googleusercontent.com">
           <AuthProvider>
