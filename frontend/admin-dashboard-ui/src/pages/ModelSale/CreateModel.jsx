@@ -116,12 +116,12 @@ const CreateModel = () => {
         price: "",
         condition: "",
         year: "",
-        brand_id: 0,
+        brand_id: "",
         brand_name: "",
         image_url: "",
       });
     } catch (error) {
-      console.error("Error creating model:", error);
+      console.error("Error creating model:", error.response.data);
       setMessage("Failed to create model.");
     }
   };
