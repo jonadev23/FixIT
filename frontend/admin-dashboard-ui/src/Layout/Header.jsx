@@ -134,11 +134,17 @@ const Header = () => {
 
         {/* Mobile Menu Overlay */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50">
-            <div className="absolute top-0 right-0 h-full w-3/4 bg-white p-6">
+          <div className="md:hidden fixed  inset-0 bg-white z-50">
+            <div className="absolute bg-black text-white dark:bg-white/20 dark:text-black inset-0 h-full w-3/4  p-6">
               <div className="flex flex-col h-full">
                 {/* Mobile Navigation */}
                 <ul className="flex flex-col gap-4">
+                  <button
+                    className="md:hidden  text-2xl p-2"
+                    onClick={toggleMenu}
+                  >
+                    {isOpen ? <FiX /> : <CiMenuBurger />}
+                  </button>
                   {navItems.map((item) => (
                     <li key={item.text}>
                       <div
