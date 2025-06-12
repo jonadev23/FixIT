@@ -21,6 +21,9 @@ func main() {
 
 	// Initialize Fiber
 	app := fiber.New()
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("FixIT backend is live!")
+	})
 
 	// Serve static images from the "uploads" directory
 	app.Static("/uploads", "./uploads")
