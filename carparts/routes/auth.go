@@ -9,22 +9,24 @@ import (
 
 // SetupRoutes defines API routes
 func SetupRoutes(app *fiber.App) {
-// Public routes
-auth := app.Group("/auth")
-auth.Post("/register", controllers.Register)
-auth.Post("/login", controllers.Login)
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("FixIT backend is live!")
+	})
 
-// User routes (authenticated)
-user := app.Group("/user", middleware.AuthRequired)
-user.Get("/profile", controllers.UserProfile)
+	// Public routes
+	auth := app.Group("/auth")
+	auth.Post("/register", controllers.Register)
+	auth.Post("/login", controllers.Login)
 
-// Admin routes (admin only)
-admin := app.Group("/admin", middleware.AdminRequired)
-admin.Get("/dashboard", controllers.AdminDashboard)
+	// User routes (authenticated)
+	user := app.Group("/user", middleware.AuthRequired)
+	user.Get("/profile", controllers.UserProfile)
 
+	// Admin routes (admin only)
+	admin := app.Group("/admin", middleware.AdminRequired)
+	admin.Get("/dashboard", controllers.AdminDashboard)
 
-
-	api := app.Group("/api")	
+	api := app.Group("/api")
 	// dealers
 	api.Get("/dealers", controllers.GetDealers)
 	api.Get("/dealers/:id", controllers.GetDealerByID)
@@ -49,8 +51,8 @@ admin.Get("/dashboard", controllers.AdminDashboard)
 	api.Post("/car-model", controllers.CreateModel)
 	api.Delete("/car-model/:id", controllers.DeleteModel)
 	api.Put("/car-model/:id", controllers.UpdateModel)
-	
-		// parts
+
+	// parts
 	// api.Get("/car-parts", controllers.GetParts)
 	api.Get("/car-part/:id", controllers.GetPartByID)
 	api.Post("/car-part", controllers.CreatePartWithShop)
