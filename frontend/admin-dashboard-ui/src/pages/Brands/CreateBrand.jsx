@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { backendUrl } from "../../utils/auth";
+import Lottie from "lottie-react";
+import spinnerJson from "../../assets/lotties/spinner.json";
 
 const CreateBrand = () => {
   const [brand, setBrand] = useState({
@@ -8,6 +10,7 @@ const CreateBrand = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setBrand({ ...brand, [e.target.name]: e.target.value });
@@ -16,10 +19,7 @@ const CreateBrand = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${backendUrl}/api/car-brand`,
-        brand
-      );
+      const response = await axios.post(`${backendUrl}/api/car-brand`, brand);
       setMessage("brand created successfully!");
     } catch (error) {
       console.error("Error creating brand:", error);
@@ -33,7 +33,7 @@ const CreateBrand = () => {
       {message && <p className="text-green-600">{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="block font-medium">Name</label>
+          <label className="block font-medium text-sm">Name</label>
           <input
             type="text"
             name="name"
@@ -44,12 +44,31 @@ const CreateBrand = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded w-full"
-        >
-          Create brand
-        </button>
+        <div className="cursor-not-allowed">
+          {" "}
+          <button
+            type="submit"
+            className={
+              loading
+                ? "pointer-events-none rounded bg-black w-full flex justify-center text-center "
+                : `cursor-pointer bg-black hover:bg-black/80 transition-colors duration-200 text-white p-2 rounded w-full`
+            }
+          >
+            {loading ? (
+              <div className="">
+                {" "}
+                <Lottie
+                  animationData={spinnerJson}
+                  loop
+                  autoplay
+                  style={{ width: 40, height: 40 }}
+                />
+              </div>
+            ) : (
+              <>Create Brand</>
+            )}{" "}
+          </button>
+        </div>
       </form>
     </div>
   );

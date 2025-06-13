@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl } from "../../utils/auth";
+import Lottie from "lottie-react";
+import spinnerJson from "../../assets/lotties/spinner.json";
 
 const CreateShop = () => {
   const [shop, setShop] = useState({
@@ -14,6 +16,7 @@ const CreateShop = () => {
   const [dealers, setDealers] = useState([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   // getting all dealers
   useEffect(() => {
     axios
@@ -101,7 +104,7 @@ const CreateShop = () => {
       {message && <p className="text-green-600">{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="block font-medium">Name</label>
+          <label className="block font-medium text-sm">Name</label>
           <input
             type="text"
             name="name"
@@ -112,7 +115,7 @@ const CreateShop = () => {
           />
         </div>
         <div className="mb-3">
-          <label className="block font-medium">Dealer</label>
+          <label className="block font-medium text-sm">Dealer</label>
           <select
             className="w-full p-2 border border-gray-300 rounded"
             name="dealer_id" // Ensure this name matches the backend field expecting the ID
@@ -127,7 +130,7 @@ const CreateShop = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label className="block font-medium">Location</label>
+          <label className="block font-medium text-sm">Location</label>
           <input
             type="text"
             name="location"
@@ -138,7 +141,7 @@ const CreateShop = () => {
           />
         </div>
         <div className="mb-3">
-          <label className="block font-medium">Rating</label>
+          <label className="block font-medium text-sm">Rating</label>
           <input
             type="number"
             name="rating"
@@ -151,12 +154,31 @@ const CreateShop = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded w-full"
-        >
-          Create Shop
-        </button>
+        <div className="cursor-not-allowed">
+          {" "}
+          <button
+            type="submit"
+            className={
+              loading
+                ? "pointer-events-none rounded bg-black w-full flex justify-center text-center "
+                : `cursor-pointer bg-black hover:bg-black/80 transition-colors duration-200 text-white p-2 rounded w-full`
+            }
+          >
+            {loading ? (
+              <div className="">
+                {" "}
+                <Lottie
+                  animationData={spinnerJson}
+                  loop
+                  autoplay
+                  style={{ width: 40, height: 40 }}
+                />
+              </div>
+            ) : (
+              <>Create Shop</>
+            )}{" "}
+          </button>
+        </div>
       </form>
     </div>
   );

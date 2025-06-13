@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl } from "../../utils/auth";
+import Lottie from "lottie-react";
+import spinnerJson from "../../assets/lotties/spinner.json";
 
 const CreateModel = () => {
   // Update your state initialization to use correct types
@@ -15,6 +17,7 @@ const CreateModel = () => {
 
   const [brands, setBrands] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   // getting all brands
   useEffect(() => {
     axios
@@ -72,7 +75,7 @@ const CreateModel = () => {
       {message && <p className="text-green-600">{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="block font-medium">Name</label>
+          <label className="block font-medium text-sm">Name</label>
           <input
             type="text"
             name="name"
@@ -83,7 +86,7 @@ const CreateModel = () => {
           />
         </div>
         <div className="mb-3">
-          <label className="block font-medium">Make</label>
+          <label className="block font-medium text-sm">Make</label>
           <input
             type="text"
             name="make"
@@ -95,7 +98,7 @@ const CreateModel = () => {
         </div>
 
         <div className="mb-3">
-          <label className="block font-medium">Year</label>
+          <label className="block font-medium text-sm">Year</label>
           <input
             type="text"
             name="year"
@@ -106,7 +109,7 @@ const CreateModel = () => {
           />
         </div>
         <div className="mb-3">
-          <label className="block font-medium">Logo</label>
+          <label className="block font-medium text-sm">Logo</label>
 
           <select
             name="image_url"
@@ -125,7 +128,7 @@ const CreateModel = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label className="block font-medium">Car Brand</label>
+          <label className="block font-medium text-sm">Car Brand</label>
           <select
             className="w-full p-2 border border-gray-300 rounded"
             name="brand_id" // Ensure this name matches the backend field expecting the ID
@@ -140,12 +143,31 @@ const CreateModel = () => {
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded w-full"
-        >
-          Create model
-        </button>
+        <div className="cursor-not-allowed">
+          {" "}
+          <button
+            type="submit"
+            className={
+              loading
+                ? "pointer-events-none rounded bg-black w-full flex justify-center text-center "
+                : `cursor-pointer bg-black hover:bg-black/80 transition-colors duration-200 text-white p-2 rounded w-full`
+            }
+          >
+            {loading ? (
+              <div className="">
+                {" "}
+                <Lottie
+                  animationData={spinnerJson}
+                  loop
+                  autoplay
+                  style={{ width: 40, height: 40 }}
+                />
+              </div>
+            ) : (
+              <>Create Model</>
+            )}{" "}
+          </button>
+        </div>
       </form>
     </div>
   );

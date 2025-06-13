@@ -33,9 +33,13 @@ const Header = () => {
         { text: "Accessories", link: "/accessories" },
       ],
     },
-    // { text: "Find Service", link: "/services" },
-    { text: "Find a car", link: "/car-models" },
-    // { text: "Blog", link: "/blog" },
+    {
+      text: "Find Cars",
+      submenu: [
+        { text: "Browse Models", link: "/car-models" },
+        { text: "Search Cars", link: "/cars" },
+      ],
+    },
   ];
 
   return (

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl } from "../../utils/auth";
+import Lottie from "lottie-react";
+import spinnerJson from "../../assets/lotties/spinner.json";
 
 const CreatePart = () => {
   const [part, setPart] = useState({
@@ -16,6 +18,7 @@ const CreatePart = () => {
   const [carModels, setCarModels] = useState([]);
   const [repairShops, setRepairShops] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Fetch Car Models and Repair Shops on component mount
   useEffect(() => {
@@ -156,13 +159,13 @@ const CreatePart = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-5 bg-white shadow-md rounded">
+    <div className="max-w-md mx-auto mt-5 p-5 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-5">Create Part</h2>
       {message && <p className="text-green-600">{message}</p>}
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="mb-3 flex gap-2">
+        <div className="mb-3 w-100 gap-2">
           <span>
-            <label className="block font-medium">Name</label>
+            <label className="block font-medium text-sm">Name</label>
             <input
               type="text"
               name="name"
@@ -173,7 +176,7 @@ const CreatePart = () => {
             />
           </span>
           {/* <span>
-            <label className="block font-medium">Image</label>
+            <label className="block font-medium text-sm">Image</label>
             <input
               type="text"
               name="image"
@@ -183,69 +186,68 @@ const CreatePart = () => {
               required
             />
           </span> */}
-          <div className="space-y-4">
-            {/* Existing form fields... */}
+        </div>
+        <div className="space-y-4">
+          {/* Existing form fields... */}
 
-            <div>
-              <label className="block font-medium">Image</label>
-              <div className="flex gap-4">
-                {/* Option 1: File upload (for devices) */}
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Upload Image
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-
-                {/* Option 2: Text input (for web) */}
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Or enter image URL
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="http://example.com/image.jpg"
-                    value={typeof part.image === "string" ? part.image : ""}
-                    onChange={handleImagePathChange}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
+          <div>
+            <div className="flex gap-4">
+              {/* Option 1: File upload (for devices) */}
+              <div className="flex-1">
+                <label className="block font-medium text-sm text-gray-700 mb-1">
+                  Upload Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
 
-              {/* Image preview */}
-              {part.image && (
-                <div className="mt-2">
-                  <p className="text-sm font-medium">Preview:</p>
-                  {part.image instanceof File ? (
-                    <img
-                      src={URL.createObjectURL(part.image)}
-                      alt="Preview"
-                      className="mt-1 h-20 object-contain border rounded"
-                    />
-                  ) : (
-                    <img
-                      src={part.image}
-                      alt="Preview"
-                      className="mt-1 h-20 object-contain border rounded"
-                      onError={(e) => (e.target.style.display = "none")}
-                    />
-                  )}
-                </div>
-              )}
+              {/* Option 2: Text input (for web) */}
+              <div className="flex-1">
+                <label className="block font-medium text-sm text-gray-700 mb-1">
+                  Or enter image URL
+                </label>
+                <input
+                  type="text"
+                  placeholder="http://example.com/image.jpg"
+                  value={typeof part.image === "string" ? part.image : ""}
+                  onChange={handleImagePathChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
             </div>
 
-            {/* Submit button and message... */}
+            {/* Image preview */}
+            {part.image && (
+              <div className="mt-2">
+                <p className=" font-medium text-sm">Preview:</p>
+                {part.image instanceof File ? (
+                  <img
+                    src={URL.createObjectURL(part.image)}
+                    alt="Preview"
+                    className="mt-1 h-20 object-contain border rounded"
+                  />
+                ) : (
+                  <img
+                    src={part.image}
+                    alt="Preview"
+                    className="mt-1 h-20 object-contain border rounded"
+                    onError={(e) => (e.target.style.display = "none")}
+                  />
+                )}
+              </div>
+            )}
           </div>
+
+          {/* Submit button and message... */}
         </div>
 
         <div className="mb-3 flex gap-2">
           <span>
-            <label className="block font-medium">Size</label>
+            <label className="block font-medium text-sm">Size</label>
             <input
               type="text"
               name="size"
@@ -257,7 +259,7 @@ const CreatePart = () => {
           </span>
 
           <span>
-            <label className="block font-medium">Price</label>
+            <label className="block font-medium text-sm">Price</label>
             <input
               type="number"
               name="price"
@@ -270,7 +272,7 @@ const CreatePart = () => {
         </div>
 
         <div className="mb-3">
-          <label className="block font-medium">Condition</label>
+          <label className="block font-medium text-sm">Condition</label>
           <input
             type="text"
             name="condition"
@@ -283,7 +285,7 @@ const CreatePart = () => {
 
         {/* Car Model Selection */}
         <div className="mb-3">
-          <label className="block font-medium">Car Model</label>
+          <label className="block font-medium text-sm">Car Model</label>
           <select
             name="car_model_id"
             value={part.car_model_id}
@@ -302,7 +304,7 @@ const CreatePart = () => {
 
         {/* Repair Shop Selection */}
         <div className="mb-3">
-          <label className="block font-medium">Repair Shop</label>
+          <label className="block font-medium text-sm">Repair Shop</label>
           <select
             name="repair_shop_id"
             value={part.repair_shop_id}
@@ -318,13 +320,31 @@ const CreatePart = () => {
             ))}
           </select>
         </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded w-full"
-        >
-          Create Part
-        </button>
+        <div className="cursor-not-allowed">
+          {" "}
+          <button
+            type="submit"
+            className={
+              loading
+                ? "pointer-events-none rounded bg-black w-full flex justify-center text-center "
+                : `cursor-pointer bg-black hover:bg-black/80 transition-colors duration-200 text-white p-2 rounded w-full`
+            }
+          >
+            {loading ? (
+              <div className="">
+                {" "}
+                <Lottie
+                  animationData={spinnerJson}
+                  loop
+                  autoplay
+                  style={{ width: 40, height: 40 }}
+                />
+              </div>
+            ) : (
+              <>Create Part</>
+            )}{" "}
+          </button>
+        </div>
       </form>
     </div>
   );

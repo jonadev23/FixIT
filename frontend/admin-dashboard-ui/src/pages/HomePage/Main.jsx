@@ -58,8 +58,8 @@ const HomePage = () => {
         Find the parts you are looking for
       </h1>
       <p className="text-sm text-center pb-6">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur
-        adipisicing elit
+        Upgrade, repair, or enhance your car with top-quality parts at great
+        prices—fast shipping and expert support included!
       </p>
       {/* Search form */}
       <div style={{ margin: "20px" }}>

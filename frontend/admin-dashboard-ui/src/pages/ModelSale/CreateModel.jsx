@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl } from "../../utils/auth";
+import Lottie from "lottie-react";
+import spinnerJson from "../../assets/lotties/spinner.json";
 
 const CreateModel = () => {
   // Update your state initialization to use correct types
@@ -18,6 +20,7 @@ const CreateModel = () => {
 
   const [brands, setBrands] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   // getting all brands
   useEffect(() => {
     axios
@@ -133,7 +136,7 @@ const CreateModel = () => {
       <form onSubmit={handleSubmit}>
         <span className="flex justify-between  gap-4">
           <div className="mb-3 w-full">
-            <label className="block font-medium">Name</label>
+            <label className="block font-medium text-sm">Name</label>
             <input
               type="text"
               name="name"
@@ -144,7 +147,7 @@ const CreateModel = () => {
             />
           </div>
           <div className="mb-3 w-full">
-            <label className="block font-medium">Make</label>
+            <label className="block font-medium text-sm">Make</label>
             <input
               type="text"
               name="make"
@@ -164,7 +167,7 @@ const CreateModel = () => {
               <div className="flex gap-4">
                 {/* Option 1: File upload (for devices) */}
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-sm text-gray-700 mb-1">
                     Upload Image
                   </label>
                   <input
@@ -177,7 +180,7 @@ const CreateModel = () => {
 
                 {/* Option 2: Text input (for web) */}
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-sm text-gray-700 mb-1">
                     Or enter image URL
                   </label>
                   <input
@@ -193,7 +196,7 @@ const CreateModel = () => {
               {/* Image preview */}
               {model.image && (
                 <div className="mt-2">
-                  <p className="text-sm font-medium">Preview:</p>
+                  <p className="text-sm font-medium text-sm">Preview:</p>
                   {model.image instanceof File ? (
                     <img
                       src={URL.createObjectURL(model.image)}
@@ -216,7 +219,7 @@ const CreateModel = () => {
           </div>
         </span>
         <div className="mb-3">
-          <label className="block font-medium">Price</label>
+          <label className="block font-medium text-sm">Price</label>
           <input
             type="number"
             name="price"
@@ -229,7 +232,7 @@ const CreateModel = () => {
 
         <span className="flex gap-4 justify-between">
           <div className="mb-3 w-full">
-            <label className="block font-medium">Condition</label>
+            <label className="block font-medium text-sm">Condition</label>
             <input
               type="text"
               name="condition"
@@ -240,7 +243,7 @@ const CreateModel = () => {
             />
           </div>
           <div className="mb-3 w-full">
-            <label className="block font-medium">Year</label>
+            <label className="block font-medium text-sm">Year</label>
             <input
               type="text"
               name="year"
@@ -255,7 +258,7 @@ const CreateModel = () => {
         <span className="flex justify-between gap-4">
           {" "}
           <div className="mb-3 w-full">
-            <label className="block font-medium">Logo</label>
+            <label className="block font-medium text-sm">Logo</label>
             <select
               name="image_url"
               value={model.image_url}
@@ -273,7 +276,7 @@ const CreateModel = () => {
             </select>
           </div>
           <div className="mb-3 w-full">
-            <label className="block font-medium">Car Brand</label>
+            <label className="block font-medium text-sm">Car Brand</label>
             <select
               className="w-full p-2 border border-gray-300 rounded"
               name="brand_id" // Ensure this name matches the backend field expecting the ID
@@ -289,12 +292,31 @@ const CreateModel = () => {
           </div>
         </span>
 
-        <button
-          type="submit"
-          className="bg-black cursor-pointer text-white p-2 rounded w-full"
-        >
-          Create model
-        </button>
+        <div className="cursor-not-allowed">
+          {" "}
+          <button
+            type="submit"
+            className={
+              loading
+                ? "pointer-events-none rounded bg-black w-full flex justify-center text-center "
+                : `cursor-pointer bg-black hover:bg-black/80 transition-colors duration-200 text-white p-2 rounded w-full`
+            }
+          >
+            {loading ? (
+              <div className="">
+                {" "}
+                <Lottie
+                  animationData={spinnerJson}
+                  loop
+                  autoplay
+                  style={{ width: 40, height: 40 }}
+                />
+              </div>
+            ) : (
+              <>Create Car</>
+            )}{" "}
+          </button>
+        </div>
       </form>
     </div>
   );
