@@ -155,7 +155,9 @@ const Header = () => {
                         className="flex justify-between items-center py-2 border-b"
                         onClick={item.submenu ? toggleSubmenu : undefined}
                       >
-                        <span className="font-semibold">{item.text}</span>
+                        <span className="font-semibold text-white">
+                          {item.text}
+                        </span>
                         {item.submenu && (
                           <span className="text-sm">
                             {isSubmenuOpen ? (
