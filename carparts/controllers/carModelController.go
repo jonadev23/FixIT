@@ -87,7 +87,7 @@ func CreateModel(c *fiber.Ctx) error {
 	// Define the base URL based on the environment
 	var imageBaseURL string
 	if os.Getenv("ENV") == "production" {
-		imageBaseURL = "https://fixit-wxa9.onrender.com/uploads/"
+		imageBaseURL = "https://fixit-production-283f.up.railway.app/uploads/"
 	} else {
 		imageBaseURL = "http://127.0.0.1:5000/uploads/"
 	}
