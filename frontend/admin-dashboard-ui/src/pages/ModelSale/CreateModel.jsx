@@ -170,7 +170,7 @@ const CreateModel = () => {
               <div className="flex gap-4">
                 {/* Option 1: File upload (for devices) */}
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-sm text-gray-700 mb-1">
+                  <label className="block font-medium text-sm text-gray-700 mb-1">
                     Upload Image
                   </label>
                   <input
@@ -183,7 +183,7 @@ const CreateModel = () => {
 
                 {/* Option 2: Text input (for web) */}
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-sm text-gray-700 mb-1">
+                  <label className="block font-medium text-sm text-gray-700 mb-1">
                     Or enter image URL
                   </label>
                   <input
@@ -199,7 +199,7 @@ const CreateModel = () => {
               {/* Image preview */}
               {model.image && (
                 <div className="mt-2">
-                  <p className="text-sm font-medium text-sm">Preview:</p>
+                  <p className="font-medium text-sm">Preview:</p>
                   {model.image instanceof File ? (
                     <img
                       src={URL.createObjectURL(model.image)}
