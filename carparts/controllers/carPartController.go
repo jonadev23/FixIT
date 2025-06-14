@@ -153,7 +153,7 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 				imagePath = filename
 
 				// Save file using Fiber's SaveFile method
-				if err := c.SaveFile(imageFile, filepath.Join("./uploads", filename)); err != nil {
+				if err := c.SaveFile(imageFile, filepath.Join("/uploads", filename)); err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 						"error": "Failed to save image",
 					})
