@@ -17,13 +17,16 @@ const CreateBrand = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(!loading);
     e.preventDefault();
     try {
       const response = await axios.post(`${backendUrl}/api/car-brand`, brand);
       setMessage("brand created successfully!");
+      setLoading(false);
     } catch (error) {
       console.error("Error creating brand:", error);
       setMessage("Failed to create brand.");
+      setLoading(false);
     }
   };
 

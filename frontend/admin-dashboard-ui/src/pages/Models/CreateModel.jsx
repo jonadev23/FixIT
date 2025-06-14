@@ -52,6 +52,7 @@ const CreateModel = () => {
   };
   // Update handleSubmit to ensure correct payload
   const handleSubmit = async (e) => {
+    setLoading(!loading);
     e.preventDefault();
     try {
       // Convert remaining string numbers to actual numbers
@@ -63,9 +64,11 @@ const CreateModel = () => {
 
       const response = await axios.post(`${backendUrl}/api/car-model`, payload);
       setMessage("Model created successfully!");
+      setLoading(false);
     } catch (error) {
       console.error("Error creating model:", error);
       setMessage("Failed to create model.");
+      setLoading(false);
     }
   };
 

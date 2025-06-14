@@ -88,13 +88,16 @@ const CreateShop = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(!loading);
     e.preventDefault();
     try {
       const response = await axios.post(`${backendUrl}/api/shops`, shop);
       setMessage("shop created successfully!");
+      setLoading(false);
     } catch (error) {
       console.error("Error creating shop:", error);
       setMessage("Failed to create shop.");
+      setLoading(false);
     }
   };
 

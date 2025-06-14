@@ -109,6 +109,7 @@ const CreatePart = () => {
   // };
   // Modified submission handler
   const handleSubmit = async (e) => {
+    setLoading(!loading);
     e.preventDefault();
 
     try {
@@ -142,6 +143,7 @@ const CreatePart = () => {
       );
 
       setMessage("Part created successfully!");
+      setLoading(false);
       // Reset form
       setPart({
         name: "",
@@ -155,6 +157,7 @@ const CreatePart = () => {
     } catch (error) {
       console.error("Error creating part:", error);
       setMessage(error.response?.data?.error || "Failed to create part.");
+      setLoading(false);
     }
   };
 

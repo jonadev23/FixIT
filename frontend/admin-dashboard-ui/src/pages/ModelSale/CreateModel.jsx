@@ -71,6 +71,7 @@ const CreateModel = () => {
   };
   // Update handleSubmit to ensure correct payload
   const handleSubmit = async (e) => {
+    setLoading(!loading);
     e.preventDefault();
     try {
       // Convert remaining string numbers to actual numbers
@@ -111,6 +112,7 @@ const CreateModel = () => {
         }
       );
       setMessage("Model created successfully!");
+      setLoading(false);
       // Reset form
       setModel({
         name: "",
@@ -126,6 +128,7 @@ const CreateModel = () => {
     } catch (error) {
       console.error("Error creating model:", error.response.data);
       setMessage("Failed to create model.");
+      setLoading(false);
     }
   };
 
