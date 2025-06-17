@@ -153,23 +153,17 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 				imagePath = filename
 
 				// Save file using Fiber's SaveFile method
-				// if err := c.SaveFile(imageFile, filepath.Join("./uploads", filename)); err != nil {
-				// 	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				// 		"error": "Failed to save image",
-				// 	})
-				// }
 				// Change your save path to use the volume mount
 				uploadPath := "/uploads" // Railway volume mount path
 				if os.Getenv("ENV") == "development" {
 					uploadPath = "./uploads" // Local development path
 				}
 
-				filename := "carpart_" + strconv.FormatInt(time.Now().UnixNano(), 10) + ext
 				if err := c.SaveFile(imageFile, filepath.Join(uploadPath, filename)); err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 						"error": "Failed to save image",
 					})
-				
+				}
 			} else {
 				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 					"error": "Image is required",
@@ -216,13 +210,13 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 	}
 
 	// Define the base URL based on the environment
-	
-var imageBaseURL string
-if os.Getenv("ENV") == "production" {
-    imageBaseURL = os.Getenv("RAILWAY_STATIC_URL") + "/uploads/"
-} else {
-    imageBaseURL = "http://127.0.0.1:5000/uploads/"
-}
+	var imageBaseURL string
+	if os.Getenv("ENV") == "production" {
+		imageBaseURL = os.Getenv("RAILWAY_STATIC_URL") + "/uploads/"
+	} else {
+		imageBaseURL = "http://127.0.0.1:5000/uploads/"
+	}
+
 	// Create CarPart
 	carPart := models.CarPart{
 		Name:       name,
