@@ -8,6 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jonadev23/backend-project/config"
 	"github.com/jonadev23/backend-project/models"
@@ -54,7 +58,7 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 		repairShopID uint
 		stock        int
 		shopPrice    float64
-		imagePath    string
+		imageURL     string // Changed from imagePath to imageURL
 	)
 
 	// Handle multipart form (file upload)
@@ -67,7 +71,7 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 			})
 		}
 
-		// Get form values
+		// Get form values (unchanged from your original code)
 		if values := form.Value; values != nil {
 			if names := values["name"]; len(names) > 0 {
 				name = names[0]
@@ -150,20 +154,49 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 
 				// Generate unique filename
 				filename := "carpart_" + strconv.FormatInt(time.Now().UnixNano(), 10) + ext
-				imagePath = filename
 
-				// Save file using Fiber's SaveFile method
-				// Change your save path to use the volume mount
-				uploadPath := "/uploads" // Railway volume mount path
-				if os.Getenv("ENV") == "development" {
-					uploadPath = "./uploads" // Local development path
-				}
-
-				if err := c.SaveFile(imageFile, filepath.Join(uploadPath, filename)); err != nil {
+				// Upload to S3 instead of local storage
+				file, err := imageFile.Open()
+				if err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-						"error": "Failed to save image",
+						"error": "Failed to open image file",
 					})
 				}
+				defer file.Close()
+
+				// Initialize S3 client
+				sess, err := session.NewSession(&aws.Config{
+					Region: aws.String(os.Getenv("AWS_REGION")), // e.g., "us-east-1"
+					Credentials: credentials.NewStaticCredentials(
+						os.Getenv("AWS_ACCESS_KEY_ID"),
+						os.Getenv("AWS_SECRET_ACCESS_KEY"),
+						"", // token can be left blank for most cases
+					),
+				})
+				if err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+						"error": "Failed to create AWS session: " + err.Error(),
+					})
+				}
+
+				// Create S3 uploader
+				uploader := s3manager.NewUploader(sess)
+
+				// Upload the file to S3
+				result, err := uploader.Upload(&s3manager.UploadInput{
+					Bucket: aws.String(os.Getenv("AWS_S3_BUCKET")), // Your bucket name
+					Key:    aws.String(filename),
+					Body:   file,
+					ACL:    aws.String("public-read"), // Makes the file publicly accessible
+				})
+				if err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+						"error": "Failed to upload image to S3: " + err.Error(),
+					})
+				}
+
+				// Store the S3 URL instead of local path
+				imageURL = result.Location
 			} else {
 				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 					"error": "Image is required",
@@ -191,7 +224,7 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 		}
 
 		name = request.Name
-		imagePath = request.Image
+		imageURL = request.Image
 		size = request.Size
 		price = request.Price
 		condition = request.Condition
@@ -201,7 +234,6 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 		shopPrice = request.ShopPrice
 	}
 
-	// Rest of your function remains the same...
 	// Validate required fields
 	if name == "" || size == "" || condition == "" || carModelID == 0 || repairShopID == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -209,18 +241,10 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 		})
 	}
 
-	// Define the base URL based on the environment
-	var imageBaseURL string
-	if os.Getenv("ENV") == "production" {
-		imageBaseURL = os.Getenv("RAILWAY_STATIC_URL") + "/uploads/"
-	} else {
-		imageBaseURL = "http://127.0.0.1:5000/uploads/"
-	}
-
-	// Create CarPart
+	// Create CarPart (using imageURL directly now)
 	carPart := models.CarPart{
 		Name:       name,
-		Image:      imageBaseURL + imagePath,
+		Image:      imageURL, // Now using the full S3 URL
 		Size:       size,
 		Price:      price,
 		Condition:  condition,

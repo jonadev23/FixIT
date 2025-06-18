@@ -70,3 +70,216 @@
 // 		"shopPart":  shopPart,
 // 	})
 // }
+
+
+func CreatePartWithShop(c *fiber.Ctx) error {
+	// Determine content type
+	contentType := c.Get("Content-Type")
+	var (
+		name         string
+		imageFile    *multipart.FileHeader
+		size         string
+		price        float64
+		condition    string
+		carModelID   uint
+		repairShopID uint
+		stock        int
+		shopPrice    float64
+		imagePath    string
+	)
+	// Handle multipart form (file upload)
+	if strings.HasPrefix(contentType, "multipart/form-data") {
+		// Parse multipart form with Fiber's built-in method
+		form, err := c.MultipartForm()
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse form data",
+			})
+		}
+
+		// Get form values
+		if values := form.Value; values != nil {
+			if names := values["name"]; len(names) > 0 {
+				name = names[0]
+			}
+			if sizes := values["size"]; len(sizes) > 0 {
+				size = sizes[0]
+			}
+			if prices := values["price"]; len(prices) > 0 {
+				price, err = strconv.ParseFloat(prices[0], 64)
+				if err != nil {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Invalid price format",
+					})
+				}
+			}
+			if conditions := values["condition"]; len(conditions) > 0 {
+				condition = conditions[0]
+			}
+			if carModelIDs := values["car_model_id"]; len(carModelIDs) > 0 {
+				id, err := strconv.ParseUint(carModelIDs[0], 10, 32)
+				if err != nil {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Invalid car model ID",
+					})
+				}
+				carModelID = uint(id)
+			}
+			if repairShopIDs := values["repair_shop_id"]; len(repairShopIDs) > 0 {
+				id, err := strconv.ParseUint(repairShopIDs[0], 10, 32)
+				if err != nil {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Invalid repair shop ID",
+					})
+				}
+				repairShopID = uint(id)
+			}
+			if stocks := values["stock"]; len(stocks) > 0 {
+				stock, err = strconv.Atoi(stocks[0])
+				if err != nil {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Invalid stock value",
+					})
+				}
+			}
+			if shopPrices := values["shop_price"]; len(shopPrices) > 0 {
+				shopPrice, err = strconv.ParseFloat(shopPrices[0], 64)
+				if err != nil {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Invalid shop price format",
+					})
+				}
+			}
+		}
+
+		// Handle file upload
+		if files := form.File; files != nil {
+			if images := files["image"]; len(images) > 0 {
+				imageFile = images[0]
+
+				// Validate file size (max 5MB)
+				if imageFile.Size > 5<<20 {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Image too large (max 5MB)",
+					})
+				}
+
+				// Validate file extension
+				ext := strings.ToLower(filepath.Ext(imageFile.Filename))
+				allowedExts := map[string]bool{
+					".jpg":  true,
+					".jpeg": true,
+					".png":  true,
+					".gif":  true,
+				}
+				if !allowedExts[ext] {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Invalid image format (only JPG, PNG, GIF allowed)",
+					})
+				}
+
+				// Generate unique filename
+				filename := "carpart_" + strconv.FormatInt(time.Now().UnixNano(), 10) + ext
+				imagePath = filename
+
+				// Save file using Fiber's SaveFile method
+				// Change your save path to use the volume mount
+				uploadPath := "/uploads" // Railway volume mount path
+				if os.Getenv("ENV") == "development" {
+					uploadPath = "./uploads" // Local development path
+				}
+
+				if err := c.SaveFile(imageFile, filepath.Join(uploadPath, filename)); err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+						"error": "Failed to save image",
+					})
+				}
+			} else {
+				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": "Image is required",
+				})
+			}
+		}
+	} else {
+		// Handle JSON request (unchanged)
+		var request struct {
+			Name         string  `json:"name"`
+			Image        string  `json:"image"`
+			Size         string  `json:"size"`
+			Price        float64 `json:"price"`
+			Condition    string  `json:"condition"`
+			CarModelID   uint    `json:"car_model_id"`
+			RepairShopID uint    `json:"repair_shop_id"`
+			Stock        int     `json:"stock"`
+			ShopPrice    float64 `json:"shop_price"`
+		}
+
+		if err := c.BodyParser(&request); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Invalid input: " + err.Error(),
+			})
+		}
+
+		name = request.Name
+		imagePath = request.Image
+		size = request.Size
+		price = request.Price
+		condition = request.Condition
+		carModelID = request.CarModelID
+		repairShopID = request.RepairShopID
+		stock = request.Stock
+		shopPrice = request.ShopPrice
+	}
+	// Rest of your function remains the same...
+	// Validate required fields
+	if name == "" || size == "" || condition == "" || carModelID == 0 || repairShopID == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Missing required fields",
+		})
+	}
+	// Define the base URL based on the environment
+	var imageBaseURL string
+	if os.Getenv("ENV") == "production" {
+		imageBaseURL = os.Getenv("RAILWAY_STATIC_URL") + "/uploads/"
+	} else {
+		imageBaseURL = "http://127.0.0.1:5000/uploads/"
+	}
+
+	// Create CarPart
+	carPart := models.CarPart{
+		Name:       name,
+		Image:      imageBaseURL + imagePath,
+		Size:       size,
+		Price:      price,
+		Condition:  condition,
+		CarModelID: carModelID,
+	}
+
+	// Save CarPart to DB
+	if err := config.DB.Create(&carPart).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to create car part: " + err.Error(),
+		})
+	}
+
+	// Create ShopPart (mapping part to shop)
+	shopPart := models.ShopPart{
+		RepairShopID: repairShopID,
+		CarPartID:    carPart.ID,
+		Stock:        stock,
+		Price:        shopPrice,
+	}
+
+	// Save ShopPart to DB
+	if err := config.DB.Create(&shopPart).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to create shop part: " + err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"message":  "Car part and shop part created successfully",
+		"carPart":  carPart,
+		"shopPart": shopPart,
+	})
+}
