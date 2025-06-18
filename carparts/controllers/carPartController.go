@@ -184,10 +184,10 @@ func CreatePartWithShop(c *fiber.Ctx) error {
 
 				// Upload the file to S3
 				result, err := uploader.Upload(&s3manager.UploadInput{
-					Bucket: aws.String(os.Getenv("AWS_S3_BUCKET")), // Your bucket name
-					Key:    aws.String(filename),
-					Body:   file,
-					ACL:    aws.String("public-read"), // Makes the file publicly accessible
+					Bucket:      aws.String(os.Getenv("AWS_S3_BUCKET")),
+					Key:         aws.String(filename),
+					Body:        file,
+					ContentType: aws.String("image/" + strings.TrimPrefix(ext, ".")),
 				})
 				if err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
